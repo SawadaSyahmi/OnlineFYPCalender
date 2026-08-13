@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FYP1 Coordination Flowchart — Semester 1 2026/2027</title>
+<style>
+  :root{
+    --navy:#123a63;
+    --blue:#1d5d91;
+    --blue2:#2c78b7;
+    --orange:#ed7d31;
+    --amber:#f2b84b;
+    --green:#2f855a;
+    --red:#c94b4b;
+    --ink:#1f2937;
+    --muted:#6b7280;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --line:#d6e0ea;
+    --soft:#eef4fa;
+    --shadow:0 12px 34px rgba(18,58,99,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  button,input{font:inherit}
+  .hero{background:linear-gradient(125deg,var(--navy),var(--blue));color:#fff;padding:28px 24px 24px;border-bottom:5px solid var(--orange)}
+  .hero-inner{max-width:1440px;margin:auto;display:flex;gap:24px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+  .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-weight:800}
+  h1{margin:7px 0 8px;font-size:clamp(28px,4vw,46px);line-height:1.05}
+  .hero p{margin:0;max-width:850px;line-height:1.55;color:#e9f2fb}
+  .countdown{min-width:245px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:15px 17px;border-radius:16px;backdrop-filter:blur(5px)}
+  .countdown b{display:block;font-size:25px;margin-top:4px}
+  .countdown small{opacity:.85}
+
+  .shell{max-width:1440px;margin:0 auto;padding:20px 20px 50px}
+  .notice{background:#fff8e7;border:1px solid #f5d385;border-left:5px solid var(--amber);padding:13px 15px;border-radius:12px;margin-bottom:18px;line-height:1.45}
+  .notice strong{color:#835c00}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 20px}
+  .btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:800;transition:.18s ease;display:inline-flex;align-items:center;gap:7px}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:var(--navy);color:#fff}
+  .btn.secondary{background:#e7eef6;color:var(--navy)}
+  .btn.orange{background:var(--orange);color:#fff}
+  .btn.green{background:var(--green);color:#fff}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+
+  .settings{display:none;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:18px;margin-bottom:22px}
+  .settings.open{display:block}
+  .settings h2{margin:0 0 5px;font-size:20px;color:var(--navy)}
+  .settings p{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .settings-grid{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:12px}
+  .field label{display:block;font-size:12px;font-weight:800;color:#4b5563;margin-bottom:5px}
+  .field input{width:100%;border:1px solid #cfd8e3;border-radius:9px;padding:9px 10px;background:#fbfdff}
+  .settings-actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+
+  .phase{margin:26px 0 30px}
+  .phase-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .phase-num{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:900;box-shadow:0 5px 12px rgba(18,58,99,.22)}
+  .phase h2{margin:0;color:var(--navy);font-size:22px}
+  .phase-sub{color:var(--muted);font-size:14px;margin-left:44px;margin-top:-7px;margin-bottom:15px}
+  .flow{display:flex;align-items:stretch;gap:30px;overflow-x:auto;padding:3px 3px 15px;scrollbar-width:thin}
+  .node{position:relative;flex:0 0 245px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 7px 18px rgba(18,58,99,.08);cursor:pointer;transition:.2s ease;min-height:180px}
+  .node:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#9bb9d6}
+  .node:not(:last-child)::after{content:"→";position:absolute;right:-26px;top:50%;transform:translateY(-50%);font-size:27px;font-weight:900;color:#92abc2}
+  .node.done{opacity:.72;background:#f3fbf6;border-color:#b8dec7}
+  .node.done::before{content:"✓";position:absolute;right:11px;top:10px;width:25px;height:25px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:900}
+  .node .week{font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;color:var(--blue)}
+  .node h3{font-size:17px;margin:7px 0 8px;line-height:1.24;color:#173a5d}
+  .node p{font-size:13px;line-height:1.45;color:#596273;margin:0 0 10px}
+  .date{font-size:13px;font-weight:900;color:#25364a;margin-top:7px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-size:10px;padding:4px 7px;border-radius:999px;font-weight:900;letter-spacing:.02em}
+  .chip.official{background:#e6f0fb;color:#1c5c92}
+  .chip.recommended{background:#fff2cf;color:#805b00}
+  .chip.student{background:#eaf7ef;color:#267248}
+  .chip.sv{background:#f3eefe;color:#6b4bb6}
+  .chip.coord{background:#fdeee5;color:#a74b16}
+
+  .summary{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:28px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 20px rgba(18,58,99,.07)}
+  .panel h2{margin:0 0 12px;color:var(--navy);font-size:20px}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid #e8edf3;vertical-align:top}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#657386;background:#f8fafc;position:sticky;top:0}
+  tr:last-child td{border-bottom:0}
+  .tag{display:inline-block;padding:3px 6px;border-radius:6px;background:#eef3f8;font-size:10px;font-weight:800;color:#4e5e70}
+  .legend{display:grid;gap:10px;font-size:13px;line-height:1.45}
+  .legend-item{display:flex;gap:10px;align-items:flex-start}
+  .dot{width:12px;height:12px;border-radius:50%;margin-top:4px;flex:none}
+  .dot.blue{background:var(--blue)}.dot.amber{background:var(--amber)}.dot.green{background:var(--green)}
+  .source-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.45}
+
+  .modal{display:none;position:fixed;inset:0;background:rgba(12,27,43,.62);z-index:1000;padding:24px;overflow:auto}
+  .modal.open{display:block}
+  .modal-card{max-width:920px;margin:20px auto;background:#fff;border-radius:18px;box-shadow:0 25px 80px rgba(0,0,0,.28);overflow:hidden}
+  .modal-head{background:linear-gradient(120deg,#143d66,#276faa);color:#fff;padding:18px 20px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+  .modal-head h2{margin:4px 0 4px;font-size:24px}
+  .modal-head p{margin:0;color:#dfeaf5;font-size:13px}
+  .close{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:9px;width:38px;height:38px;cursor:pointer;font-size:22px}
+  .modal-body{padding:20px}
+  .meta{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:9px;margin-bottom:16px}
+  .meta div{background:#f5f8fb;border:1px solid #e1e8ef;border-radius:10px;padding:9px}
+  .meta small{display:block;color:#7b8795;font-weight:800;text-transform:uppercase;font-size:9px;letter-spacing:.06em}
+  .meta b{font-size:13px;color:#23364c}
+  .details-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}
+  .box{border:1px solid #dde5ed;border-radius:12px;padding:14px;background:#fff}
+  .box h3{margin:0 0 9px;font-size:15px;color:#173d62}
+  .checklist{margin:0;padding-left:20px;color:#465567;line-height:1.55;font-size:13px}
+  .email-block{border:1px solid #d7e1eb;border-radius:12px;overflow:hidden;margin-bottom:12px}
+  .email-top{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#f5f8fb;padding:10px 12px;border-bottom:1px solid #dfe7ef}
+  .email-top b{font-size:13px;color:#183b5d}
+  .email-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .mini{font-size:11px;border:0;border-radius:7px;padding:6px 8px;cursor:pointer;font-weight:800;background:#dfeaf5;color:#164e7d}
+  .mini.copyall{background:#dff3e7;color:#24683f}
+  .subject{padding:10px 12px 0;font-size:12px;color:#4d5a69}
+  .subject strong{color:#23364c}
+  pre.email{white-space:pre-wrap;word-wrap:break-word;margin:0;padding:11px 12px 13px;font-family:Segoe UI,Arial,sans-serif;font-size:13px;line-height:1.55;color:#2f3d4c;background:#fff}
+  .modal-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid #e5eaf0}
+  .toast{position:fixed;right:20px;bottom:20px;background:#183b5d;color:#fff;padding:11px 14px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:1200;font-size:13px;font-weight:800}
+  .toast.show{display:block;animation:fade 2s ease both}
+  @keyframes fade{0%{opacity:0;transform:translateY(8px)}10%,80%{opacity:1;transform:none}100%{opacity:0}}
+
+
+  /* Monthly calendar page */
+  #calendarPage{display:none}
+  body.calendar-mode main.shell > .notice,
+  body.calendar-mode main.shell > .settings,
+  body.calendar-mode main.shell > .phase,
+  body.calendar-mode main.shell > .summary,
+  body.calendar-mode #editorPage{display:none!important}
+  body.calendar-mode #calendarPage{display:block}
+  .calendar-title{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+  .calendar-title h2{margin:0;color:var(--navy);font-size:25px}
+  .calendar-title p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.5;max-width:820px}
+  .calendar-legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .cal-legend{font-size:11px;font-weight:900;border-radius:999px;padding:6px 9px}
+  .cal-legend.event{background:#e6f0fb;color:#1c5c92}
+  .cal-legend.reminder{background:#fff0e5;color:#a44d16}
+  .cal-legend.done{background:#e7f6ec;color:#267248}
+  .calendar-panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 20px rgba(18,58,99,.07);overflow:hidden}
+  .calendar-controls{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid #e5eaf0;background:#fbfdff}
+  .calendar-controls h3{margin:0;color:#173d62;font-size:20px;min-width:190px;text-align:center}
+  .calendar-control-group{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+  .calendar-scroll{overflow-x:auto}
+  .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(135px,1fr));min-width:945px;background:#dfe7ef;gap:1px}
+  .calendar-weekday{background:#edf3f8;color:#5b6d7f;text-align:center;text-transform:uppercase;letter-spacing:.06em;font-size:10px;font-weight:900;padding:9px 5px}
+  .calendar-day{background:#fff;min-height:142px;padding:8px;position:relative}
+  .calendar-day.outside{background:#f8fafc;color:#9aa6b2}
+  .calendar-day.today{box-shadow:inset 0 0 0 2px var(--orange)}
+  .calendar-day.has-events{background:#fcfdff}
+  .calendar-day-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:6px}
+  .calendar-day-num{font-size:12px;font-weight:900;color:#33475b}
+  .calendar-day.outside .calendar-day-num{color:#a2acb7}
+  .today-pill{font-size:9px;font-weight:900;color:#a84b12;background:#fff0e5;border-radius:999px;padding:3px 6px}
+  .calendar-events{display:grid;gap:5px}
+  .cal-event{width:100%;text-align:left;border:1px solid #c9dced;background:#eaf3fb;color:#174f7d;border-radius:7px;padding:5px 6px;cursor:pointer;font-size:10px;font-weight:800;line-height:1.25;transition:.15s ease}
+  .cal-event:hover{border-color:#78a9d2;background:#deedf9}
+  .cal-event.reminder{background:#fff2e8;border-color:#f1c29f;color:#9a4a16}
+  .cal-event.reminder:hover{background:#ffe9d9;border-color:#e9ad7d}
+  .cal-event.done{background:#ebf7ef;border-color:#b9dec7;color:#2c6f49;text-decoration:line-through;opacity:.78}
+  .cal-event .event-role{display:block;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;opacity:.78;margin-bottom:1px}
+  .calendar-foot{padding:11px 14px;border-top:1px solid #e5eaf0;background:#fbfdff;color:#6f7d8a;font-size:12px;line-height:1.45}
+  .calendar-empty-note{margin-top:12px;background:#fff8e7;border:1px solid #f5d385;border-radius:10px;padding:10px 12px;color:#755b20;font-size:12px;line-height:1.45;display:none}
+  @media(max-width:650px){
+    .calendar-controls{align-items:stretch}.calendar-controls h3{order:-1;width:100%;text-align:left}
+    .calendar-control-group{width:100%}.calendar-control-group .btn{flex:1;justify-content:center}
+  }
+
+
+  /* Editable planner page */
+  #editorPage{display:none}
+  body.editor-mode main.shell > .notice,
+  body.editor-mode main.shell > .settings,
+  body.editor-mode main.shell > .phase,
+  body.editor-mode main.shell > .summary{display:none!important}
+  body.editor-mode #editorPage{display:block}
+  .editor-wrap{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start}
+  .editor-sidebar,.editor-main{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 20px rgba(18,58,99,.07)}
+  .editor-sidebar{padding:14px;position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}
+  .editor-main{padding:18px}
+  .editor-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+  .editor-title h2{margin:0;color:var(--navy);font-size:23px}
+  .editor-title p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.45;max-width:760px}
+  .task-search{width:100%;border:1px solid #cfd8e3;border-radius:9px;padding:9px 10px;margin-bottom:10px;background:#fbfdff}
+  .editor-task-list{display:grid;gap:7px}
+  .editor-task-btn{width:100%;text-align:left;border:1px solid #dce5ee;background:#f8fbfe;border-radius:10px;padding:9px 10px;cursor:pointer;color:#29445f;font-weight:800;font-size:12px;line-height:1.3}
+  .editor-task-btn:hover{background:#eef5fb;border-color:#aac4dc}
+  .editor-task-btn.active{background:#e5f0fb;border-color:#7da9d0;color:#123a63}
+  .editor-task-btn small{display:block;color:#7a8795;font-weight:600;margin-top:3px}
+  .editor-section{border-top:1px solid #e5eaf0;padding-top:16px;margin-top:16px}
+  .editor-section:first-of-type{border-top:0;padding-top:0;margin-top:0}
+  .editor-section h3{margin:0 0 10px;color:#173d62;font-size:16px}
+  .editor-grid{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:11px}
+  .editor-grid.three{grid-template-columns:repeat(3,minmax(160px,1fr))}
+  .edit-field label{display:block;font-size:11px;font-weight:900;color:#586777;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+  .edit-field input,.edit-field textarea,.edit-field select{width:100%;border:1px solid #cfd8e3;border-radius:9px;padding:9px 10px;background:#fbfdff;color:#26384b}
+  .edit-field textarea{min-height:105px;resize:vertical;line-height:1.45}
+  .edit-field textarea.tall{min-height:210px}
+  .help{font-size:11px;color:#7b8795;line-height:1.4;margin-top:5px}
+  .email-editor{border:1px solid #dce5ee;border-radius:12px;padding:12px;margin-top:10px;background:#fbfdff}
+  .email-editor-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:9px}
+  .email-editor-head b{color:#183b5d;font-size:13px}
+  .editor-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid #e5eaf0}
+  .chip.custom{background:#e9e3ff;color:#5a43a5}
+  .customized-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:900;color:#614ab0;background:#eee9ff;padding:5px 8px;border-radius:999px}
+  .editor-empty{padding:30px;text-align:center;color:#718096}
+  .general-card{background:#f6f9fc;border:1px solid #dfe8f0;border-radius:12px;padding:13px;margin-bottom:15px}
+  .general-card h3{margin:0 0 10px;color:#173d62;font-size:15px}
+  @media(max-width:900px){.editor-wrap{grid-template-columns:1fr}.editor-sidebar{position:static;max-height:none}.editor-grid,.editor-grid.three{grid-template-columns:1fr}}
+
+  /* Supabase cloud sync */
+  .cloud-settings{display:none;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:18px;margin-bottom:22px}
+  .cloud-settings.open{display:block}
+  .cloud-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+  .cloud-head h2{margin:0 0 5px;color:var(--navy);font-size:20px}
+  .cloud-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;max-width:850px}
+  .cloud-status{display:inline-flex;align-items:center;gap:7px;border:1px solid #d7e1eb;background:#f7fafc;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;color:#516273}
+  .cloud-status.connected{background:#eaf7ef;border-color:#b9dec7;color:#24683f}
+  .cloud-status.error{background:#fff0ef;border-color:#efc0bc;color:#9b3832}
+  .cloud-dot{width:9px;height:9px;border-radius:50%;background:#9aa7b4}
+  .cloud-status.connected .cloud-dot{background:var(--green)}
+  .cloud-status.error .cloud-dot{background:var(--red)}
+  .cloud-grid{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:12px}
+  .cloud-actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .cloud-auto{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid #dfe6ee;border-radius:10px;background:#f8fafc;font-size:12px;font-weight:800;color:#435468}
+  .cloud-auto input{width:17px;height:17px}
+  .cloud-message{margin-top:12px;padding:10px 12px;border-radius:10px;background:#f6f9fc;border:1px solid #dfe7ef;font-size:12px;color:#536476;line-height:1.45}
+  .cloud-message.good{background:#edf8f1;border-color:#c3e3cf;color:#286846}
+  .cloud-message.bad{background:#fff1f0;border-color:#efc7c4;color:#963b35}
+  .cloud-security{margin-top:12px;background:#fff8e7;border:1px solid #f5d385;border-left:4px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;color:#6f5722}
+  .cloud-sql{margin-top:14px;border:1px solid #dce5ee;border-radius:12px;overflow:hidden;background:#fbfdff}
+  .cloud-sql summary{cursor:pointer;padding:11px 13px;font-size:12px;font-weight:900;color:#234d73;background:#f1f6fa}
+  .cloud-sql pre{margin:0;padding:13px;white-space:pre-wrap;overflow:auto;font-size:11px;line-height:1.5;background:#101820;color:#e9f1f7;max-height:360px}
+  .cloud-sql-actions{padding:9px 12px;border-top:1px solid #dce5ee;background:#f8fbfd;display:flex;gap:8px;flex-wrap:wrap}
+  .toolbar-cloud-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;border-radius:999px;padding:4px 8px;background:#edf2f7;color:#5b6877;margin-left:2px}
+  .toolbar-cloud-badge.online{background:#e5f5eb;color:#24683f}
+  body.calendar-mode main.shell > #cloudSettings,
+  body.editor-mode main.shell > #cloudSettings{display:none!important}
+  @media(max-width:950px){.cloud-grid{grid-template-columns:repeat(2,minmax(180px,1fr))}}
+  @media(max-width:650px){.cloud-grid{grid-template-columns:1fr}.cloud-actions .btn{flex:1;justify-content:center}.cloud-auto{width:100%}}
+
+  @media(max-width:950px){
+    .settings-grid{grid-template-columns:repeat(2,minmax(180px,1fr))}
+    .summary,.details-grid{grid-template-columns:1fr}
+    .meta{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:650px){
+    .shell{padding:14px 12px 40px}
+    .hero{padding:23px 16px}
+    .settings-grid{grid-template-columns:1fr}
+    .flow{display:block;overflow:visible;padding-bottom:0}
+    .node{width:100%;min-height:auto;margin:0 0 29px;flex:none}
+    .node:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-27px;transform:translateX(-50%)}
+    .phase-sub{margin-left:0}
+    .modal{padding:8px}.modal-card{margin:8px auto}.modal-body{padding:14px}.modal-head{padding:15px}
+  }
+</style>
+<!-- Supabase JS v2: official browser CDN build -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">College of Engineering · Final Year Project I</div>
+      <h1>FYP1 Coordination Command Centre</h1>
+      <p>Semester 1, Academic Year 2026/2027. Click any agenda card to open its checklist, official/recommended timing, and ready-to-copy email text for students, supervisors, examiners or internal coordinators.</p>
+    </div>
+    <div class="countdown">
+      <small>Semester starts</small>
+      <b>24 Aug 2026</b>
+      <div id="countdownText">Calculating…</div>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="notice"><strong>Important:</strong> blue-labelled dates are taken from the FYP1 milestone/planner. Amber-labelled pre-semester dates are a recommended coordination schedule so that supervisor assignment, communication channels, room booking and submission setup are completed before or during Week 1.</div>
+
+  <div class="toolbar">
+    <button class="btn primary" onclick="toggleSettings()">⚙ Links, Rooms & Email Settings</button>
+    <button class="btn secondary" onclick="toggleCloudSettings()">☁ Supabase Sync <span id="toolbarCloudBadge" class="toolbar-cloud-badge">Local only</span></button>
+    <button id="calendarToggleBtn" class="btn green" onclick="toggleCalendarPage()">🗓 Monthly Calendar</button>
+    <button class="btn secondary" onclick="scrollToReminders()">📅 1-Week Reminder Calendar</button>
+    <button id="editorToggleBtn" class="btn orange" onclick="toggleEditorPage()">✏ Edit Dates & Content</button>
+    <button class="btn ghost" onclick="resetCompletion()">↺ Reset Task Status</button>
+  </div>
+
+  <section id="settings" class="settings">
+    <h2>Reusable details for email templates</h2>
+    <p>Fill these once. The popup emails will automatically use your links, room details and coordinator name. Values are stored locally and are also included in Supabase cloud sync when connected.</p>
+    <div class="settings-grid">
+      <div class="field"><label>Coordinator name</label><input id="coordinatorName" value="Dr Faris Syahmi" /></div>
+      <div class="field"><label>Student project-area update link</label><input id="studentAreaLink" placeholder="https://..." /></div>
+      <div class="field"><label>Supervisor project-area / availability link</label><input id="svAreaLink" placeholder="https://..." /></div>
+      <div class="field"><label>MS Teams link</label><input id="teamsLink" placeholder="https://teams.microsoft.com/..." /></div>
+      <div class="field"><label>Telegram group link</label><input id="telegramLink" placeholder="https://t.me/..." /></div>
+      <div class="field"><label>Student–SV assignment list link</label><input id="assignmentLink" placeholder="https://..." /></div>
+      <div class="field"><label>PR1 submission link</label><input id="pr1Link" placeholder="https://..." /></div>
+      <div class="field"><label>PR2 submission link</label><input id="pr2Link" placeholder="https://..." /></div>
+      <div class="field"><label>Logbook / presentation link</label><input id="logbookLink" placeholder="https://..." /></div>
+      <div class="field"><label>FYP1 survey link</label><input id="surveyLink" placeholder="https://..." /></div>
+      <div class="field"><label>Briefing 1 room</label><input id="briefing1Room" placeholder="e.g. BA-1-1" /></div>
+      <div class="field"><label>Briefing 1 time</label><input id="briefing1Time" placeholder="e.g. 3:00–4:00 pm" /></div>
+      <div class="field"><label>Methodology room</label><input id="methodRoom" placeholder="e.g. BA-1-1" /></div>
+      <div class="field"><label>Methodology time</label><input id="methodTime" placeholder="e.g. 8:30 am–1:00 pm" /></div>
+      <div class="field"><label>Project-area update deadline</label><input id="areaDeadline" value="17 Aug 2026" /></div>
+    </div>
+    <div class="settings-actions">
+      <button class="btn green" onclick="saveSettings()">Save settings</button>
+      <button class="btn ghost" onclick="clearSettings()">Clear saved values</button>
+    </div>
+  </section>
+
+  <section id="cloudSettings" class="cloud-settings">
+    <div class="cloud-head">
+      <div>
+        <h2>☁ Supabase Cloud Sync</h2>
+        <p>Synchronise dates, agenda content, email templates, reusable links/rooms and completed-task status across devices. The planner remains usable locally even when Supabase is unavailable.</p>
+      </div>
+      <div id="cloudStatus" class="cloud-status"><span class="cloud-dot"></span><span id="cloudStatusText">Not configured</span></div>
+    </div>
+
+    <div class="cloud-grid">
+      <div class="field"><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://YOUR-PROJECT.supabase.co" autocomplete="off" /></div>
+      <div class="field"><label>Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_... or legacy anon key" autocomplete="off" /></div>
+      <div class="field"><label>Planner key</label><input id="supabasePlannerKey" value="sem1-2026-2027" placeholder="sem1-2026-2027" /></div>
+      <div class="field"><label>Coordinator email</label><input id="supabaseEmail" type="email" placeholder="your-email@uniten.edu.my" autocomplete="username" /></div>
+      <div class="field"><label>Password</label><input id="supabasePassword" type="password" placeholder="Supabase Auth password" autocomplete="current-password" /></div>
+      <div class="field"><label>Last cloud sync</label><input id="supabaseLastSync" value="Never" readonly /></div>
+    </div>
+
+    <div class="cloud-actions">
+      <button class="btn primary" onclick="saveCloudConfig()">Save connection</button>
+      <button id="cloudSignInBtn" class="btn green" onclick="cloudSignIn()">Sign in</button>
+      <button id="cloudSignUpBtn" class="btn ghost" onclick="cloudSignUp()">Create account</button>
+      <button id="cloudSignOutBtn" class="btn ghost" onclick="cloudSignOut()" style="display:none">Sign out</button>
+      <button class="btn secondary" onclick="pullCloudState()">↓ Pull from cloud</button>
+      <button class="btn secondary" onclick="pushCloudState()">↑ Push to cloud</button>
+      <label class="cloud-auto"><input id="cloudAutoSync" type="checkbox" checked onchange="saveCloudConfig()" /> Auto-sync after edits</label>
+    </div>
+
+    <div id="cloudMessage" class="cloud-message">Enter your Supabase Project URL and publishable key, run the SQL setup below once in Supabase, then sign in. On the first successful connection, the newest copy (local or cloud) is kept automatically.</div>
+
+    <div class="cloud-security"><strong>Security:</strong> use only a Supabase <strong>publishable key</strong> (or legacy <strong>anon</strong> key) in this GitHub Pages app. Never paste a <strong>service_role</strong> or secret key here. The SQL below enables Row Level Security so each signed-in user can access only their own planner row.</div>
+
+    <details class="cloud-sql">
+      <summary>One-time Supabase database setup (SQL)</summary>
+      <pre id="supabaseSetupSql">create table if not exists public.fyp1_planner_state (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  planner_key text not null,
+  state jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, planner_key)
+);
+
+alter table public.fyp1_planner_state enable row level security;
+
+-- Re-running this setup is safe.
+drop policy if exists "Users manage own FYP1 planner" on public.fyp1_planner_state;
+create policy "Users manage own FYP1 planner"
+on public.fyp1_planner_state
+for all
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on table public.fyp1_planner_state to authenticated;</pre>
+      <div class="cloud-sql-actions">
+        <button class="btn secondary" onclick="copySupabaseSql()">Copy SQL</button>
+      </div>
+    </details>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><div class="phase-num">1</div><h2>Pre-Semester Preparation</h2></div>
+    <div class="phase-sub">Goal: finish supervisor readiness, student preferences, assignment, communication channels, rooms and submission infrastructure before Week 1.</div>
+    <div class="flow">
+      <article class="node" data-id="area-refresh" onclick="openTask('area-refresh')">
+        <div class="week">Recommended · 13–17 Aug</div><h3>Refresh Project Areas</h3>
+        <p>Send student and supervisor emails at the same time: students rank project areas; supervisors update project areas and availability.</p>
+        <div class="date">Suggested cutoff: 17 Aug 2026</div>
+        <div class="chips"><span class="chip recommended">Recommended</span><span class="chip student">Student</span><span class="chip sv">SV</span></div>
+      </article>
+      <article class="node" data-id="verify-lists" onclick="openTask('verify-lists')">
+        <div class="week">Recommended · 14–18 Aug</div><h3>Verify Lists & Capacity</h3>
+        <p>Confirm registered FYP1 students, active supervisors, availability and supervision capacity before matching.</p>
+        <div class="date">Complete before assignment</div>
+        <div class="chips"><span class="chip recommended">Recommended</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="room-booking" onclick="openTask('room-booking')">
+        <div class="week">Recommended · by 17 Aug</div><h3>Book Two Briefing Rooms</h3>
+        <p>Reserve rooms for FYP1 Intro Briefing and the half-day Research & Design Methodology session.</p>
+        <div class="date">Events: 28 Aug & 4 Sep</div>
+        <div class="chips"><span class="chip recommended">Recommended</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="assignment" onclick="openTask('assignment')">
+        <div class="week">Recommended · 18–20 Aug</div><h3>Student–SV Assignment</h3>
+        <p>Match students to preferred project areas, check supervisor loads, resolve exceptions, then release the assignment.</p>
+        <div class="date">Release by: 20 Aug 2026</div>
+        <div class="chips"><span class="chip recommended">Recommended</span><span class="chip student">Student</span><span class="chip sv">SV</span></div>
+      </article>
+      <article class="node" data-id="channels" onclick="openTask('channels')">
+        <div class="week">Recommended · 20–21 Aug</div><h3>Create Telegram + MS Teams</h3>
+        <p>Create the official communication spaces, add students, pin planner/guides, and state which channel is authoritative.</p>
+        <div class="date">Complete before Week 1</div>
+        <div class="chips"><span class="chip recommended">Recommended</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="submission-links" onclick="openTask('submission-links')">
+        <div class="week">Recommended · 20–21 Aug</div><h3>Create Submission Links</h3>
+        <p>Prepare PR1, PR2, logbook/presentation and survey folders/forms; set clear naming rules and closing dates.</p>
+        <div class="date">Publish in Teams before Week 1</div>
+        <div class="chips"><span class="chip recommended">Recommended</span><span class="chip coord">Coordinator</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><div class="phase-num">2</div><h2>Week 1–2 Launch</h2></div>
+    <div class="phase-sub">Official milestone/planner launch activities.</div>
+    <div class="flow">
+      <article class="node" data-id="week1-meet-sv" onclick="openTask('week1-meet-sv')">
+        <div class="week">Week 1 · Monday</div><h3>Student Meets Assigned SV</h3>
+        <p>Students should already have a Project Direction / Proposal ready before meeting the assigned supervisor to finalise project title details.</p>
+        <div class="date">24 Aug 2026</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span><span class="chip sv">SV</span></div>
+      </article>
+      <article class="node" data-id="briefing1" onclick="openTask('briefing1')">
+        <div class="week">Week 1 · Friday</div><h3>FYP1 Intro Briefing</h3>
+        <p>Introduce FYP1 expectations, workflow, assessment, communication channels, deadlines and submission rules.</p>
+        <div class="date">28 Aug 2026</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="methodology" onclick="openTask('methodology')">
+        <div class="week">Week 2 · Friday</div><h3>Research & Design Methodology</h3>
+        <p>Half-day intensive session on research planning, literature search, methods, proposal/report writing, referencing and plagiarism.</p>
+        <div class="date">4 Sep 2026</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span></div>
+      </article>
+      <article class="node" data-id="change-sv" onclick="openTask('change-sv')">
+        <div class="week">Week 2 · Friday</div><h3>Change of Supervisor Cut-Off</h3>
+        <p>Any requested change is subject to approval by DDA / HoU. Handle exceptions quickly before project work progresses further.</p>
+        <div class="date">4 Sep 2026</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip sv">SV</span><span class="chip coord">Coordinator</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><div class="phase-num">3</div><h2>Project Administration & Assessments</h2></div>
+    <div class="phase-sub">During the semester, the main coordination work becomes one-week-before reminders, submission monitoring and marks-entry follow-up.</div>
+    <div class="flow">
+      <article class="node" data-id="wkwpea" onclick="openTask('wkwpea')">
+        <div class="week">Week 5</div><h3>WK–WP–EA Form</h3>
+        <p>Ensure required complexity / engineering activity form is completed with supervisors.</p>
+        <div class="date">Due: 21 Sep · Reminder: 14 Sep</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip sv">SV</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="title-approval" onclick="openTask('title-approval')">
+        <div class="week">Week 6</div><h3>Project Title Approval</h3>
+        <p>Course Coordinator approves FYP1 project title details after student–supervisor finalisation.</p>
+        <div class="date">Due: 1 Oct · Reminder: 24 Sep</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="pr1" onclick="openTask('pr1')">
+        <div class="week">Week 7–8</div><h3>Progress Report 1</h3>
+        <p>Student submission followed by supervisor feedback / collection and DFME.</p>
+        <div class="date">Due: 9 Oct · DFME: 19 Oct</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span><span class="chip sv">SV</span></div>
+      </article>
+      <article class="node" data-id="pr2" onclick="openTask('pr2')">
+        <div class="week">Week 9–10</div><h3>Progress Report 2</h3>
+        <p>Student submission followed by supervisor feedback / collection and DFME.</p>
+        <div class="date">Due: 27 Oct · DFME: 2 Nov</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span><span class="chip sv">SV</span></div>
+      </article>
+      <article class="node" data-id="oral-logbook" onclick="openTask('oral-logbook')">
+        <div class="week">Week 10–12</div><h3>Oral Presentation + Logbook</h3>
+        <p>Coordinate schedules, examiner allocation, logbook submission, evaluation window and marks entry.</p>
+        <div class="date">3–13 Nov · DFME: 16 Nov</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span><span class="chip sv">SV</span></div>
+      </article>
+      <article class="node" data-id="survey" onclick="openTask('survey')">
+        <div class="week">Week 10–12</div><h3>FYP1 Survey</h3>
+        <p>Survey opens 2 Nov and is compulsory. Send final reminder one week before closing.</p>
+        <div class="date">Closes: 20 Nov · Reminder: 13 Nov</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip student">Student</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><div class="phase-num">4</div><h2>Semester Close-Out</h2></div>
+    <div class="phase-sub">Final internal submission and course-file completion.</div>
+    <div class="flow">
+      <article class="node" data-id="grading" onclick="openTask('grading')">
+        <div class="week">Week 15</div><h3>Submit FYP1 Grading</h3>
+        <p>Compile and submit final FYP1 grading to HoU & DDA after all assessment marks are complete.</p>
+        <div class="date">Due: 9 Dec · Reminder: 2 Dec</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip coord">Coordinator</span></div>
+      </article>
+      <article class="node" data-id="course-file" onclick="openTask('course-file')">
+        <div class="week">Week 22</div><h3>OBEOS & Course File</h3>
+        <p>Complete OBEOS and the FYP1 course file with evidence, assessment records and required documentation.</p>
+        <div class="date">Due: 25 Jan 2027 · Reminder: 18 Jan</div>
+        <div class="chips"><span class="chip official">Official</span><span class="chip coord">Coordinator</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="reminders" class="summary">
+    <div class="panel">
+      <h2>1-Week Reminder Calendar</h2>
+      <table>
+        <thead><tr><th>Send on</th><th>For</th><th>Official date</th><th>Audience</th></tr></thead>
+        <tbody id="reminderTableBody">
+          <tr><td>21 Aug 2026</td><td>FYP1 Intro Briefing</td><td>28 Aug 2026</td><td><span class="tag">Students</span></td></tr>
+          <tr><td>28 Aug 2026</td><td>Research & Design Methodology + SV change cut-off</td><td>4 Sep 2026</td><td><span class="tag">Students / SV</span></td></tr>
+          <tr><td>14 Sep 2026</td><td>WK–WP–EA Form</td><td>21 Sep 2026</td><td><span class="tag">SV / Coordinator</span></td></tr>
+          <tr><td>24 Sep 2026</td><td>FYP1 Project Title Approval</td><td>1 Oct 2026</td><td><span class="tag">Coordinator / SV</span></td></tr>
+          <tr><td>2 Oct 2026</td><td>PR1 submission</td><td>9 Oct 2026</td><td><span class="tag">Students</span></td></tr>
+          <tr><td>12 Oct 2026</td><td>PR1 collection / DFME</td><td>19 Oct 2026</td><td><span class="tag">SV / Students</span></td></tr>
+          <tr><td>20 Oct 2026</td><td>PR2 submission</td><td>27 Oct 2026</td><td><span class="tag">Students</span></td></tr>
+          <tr><td>26 Oct 2026</td><td>PR2 collection / DFME</td><td>2 Nov 2026</td><td><span class="tag">SV / Students</span></td></tr>
+          <tr><td>27 Oct 2026</td><td>Oral Presentation + Logbook window starts</td><td>3 Nov 2026</td><td><span class="tag">Students / SV / Examiner</span></td></tr>
+          <tr><td>6 Nov 2026</td><td>Oral Presentation + Logbook window ends</td><td>13 Nov 2026</td><td><span class="tag">Students / SV</span></td></tr>
+          <tr><td>9 Nov 2026</td><td>Oral + Logbook DFME</td><td>16 Nov 2026</td><td><span class="tag">SV / Examiner</span></td></tr>
+          <tr><td>13 Nov 2026</td><td>FYP1 Survey closes</td><td>20 Nov 2026</td><td><span class="tag">Students</span></td></tr>
+          <tr><td>2 Dec 2026</td><td>FYP1 grading to HoU & DDA</td><td>9 Dec 2026</td><td><span class="tag">Coordinator</span></td></tr>
+          <tr><td>18 Jan 2027</td><td>OBEOS & Course File</td><td>25 Jan 2027</td><td><span class="tag">Coordinator</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Coordination Logic</h2>
+      <div class="legend">
+        <div class="legend-item"><span class="dot amber"></span><div><b>Pre-semester readiness:</b> project-area refresh → verify capacity → room booking → matching → release assignment → Teams/Telegram → submission links.</div></div>
+        <div class="legend-item"><span class="dot blue"></span><div><b>Official dates:</b> follow the Semester 1 2026/2027 FYP milestone/planner. Do not move official deadlines in this page unless the College calendar changes.</div></div>
+        <div class="legend-item"><span class="dot green"></span><div><b>Reminder rule:</b> issue the main reminder 7 days before each deadline/event. For multi-day oral presentation, send a reminder before the window opens and another before it closes.</div></div>
+      </div>
+      <div class="source-note"><b>Source notes:</b> official FYP1 dates are from the uploaded “MIlestone FYP Sem1, 2026_2027 to all FYP Coordinators.xlsx” and “Sem 1 2026-2027 FYP Planner_By Tan.050826.1600.xlsx”. The pre-semester coordination dates are suggested operational dates, not official College deadlines.</div>
+    </div>
+  </section>
+
+
+  <section id="calendarPage">
+    <div class="calendar-title">
+      <div>
+        <div class="eyebrow" style="color:var(--blue)">Monthly Planner View</div>
+        <h2>FYP1 Monthly Calendar</h2>
+        <p>All agenda deadlines and reminder dates are read directly from the editable <b>Date / deadline</b> and <b>Reminder date / instruction</b> fields. If you change those fields in the editor and save, this calendar updates automatically.</p>
+      </div>
+      <div class="calendar-legend">
+        <span class="cal-legend event">Agenda / Deadline</span>
+        <span class="cal-legend reminder">Reminder</span>
+        <span class="cal-legend done">Completed</span>
+      </div>
+    </div>
+
+    <div class="calendar-panel">
+      <div class="calendar-controls">
+        <div class="calendar-control-group">
+          <button class="btn ghost" onclick="moveCalendarMonth(-1)">← Previous</button>
+          <button class="btn ghost" onclick="goCalendarSemesterStart()">Semester Start</button>
+        </div>
+        <h3 id="calendarMonthLabel">Month</h3>
+        <div class="calendar-control-group">
+          <button class="btn ghost" onclick="goCalendarToday()">Today</button>
+          <button class="btn ghost" onclick="moveCalendarMonth(1)">Next →</button>
+        </div>
+      </div>
+      <div class="calendar-scroll">
+        <div id="calendarGrid" class="calendar-grid" aria-label="FYP1 monthly calendar"></div>
+      </div>
+      <div class="calendar-foot">Click any calendar item to open the same agenda pop-up with its checklist and ready-to-copy email. Date ranges are shown as separate <b>Start</b> and <b>End</b> entries to keep the monthly view readable.</div>
+    </div>
+    <div id="calendarEmptyNote" class="calendar-empty-note"></div>
+  </section>
+
+  <section id="editorPage">
+    <div class="editor-title">
+      <div>
+        <div class="eyebrow" style="color:var(--blue)">Local Planner Editor</div>
+        <h2>Edit FYP1 Dates, Agenda Content & Email Templates</h2>
+        <p>Select any agenda item, modify its dates, flowchart text, checklist, notes or email templates, then save. Changes are stored in this browser and immediately update the flowchart and pop-up content.</p>
+      </div>
+      <div class="customized-badge" id="customCount">0 customized items</div>
+    </div>
+
+    <div class="general-card">
+      <h3>Semester display settings</h3>
+      <div class="editor-grid three">
+        <div class="edit-field"><label>Semester start date</label><input id="editSemesterStart" type="date" value="2026-08-24"><div class="help">Used for the countdown in the header.</div></div>
+        <div class="edit-field"><label>Semester start display</label><input id="editSemesterStartLabel" value="24 Aug 2026"><div class="help">Text shown in the header.</div></div>
+        <div class="edit-field"><label>Reminder rule label</label><input id="editReminderRule" value="Main reminder: 7 days before"><div class="help">For your own reference; individual task reminders remain editable below.</div></div>
+      </div>
+      <div class="editor-actions" style="margin-top:11px;padding-top:11px">
+        <button class="btn green" onclick="saveGeneralEdits()">Save semester settings</button>
+      </div>
+    </div>
+
+    <div class="editor-wrap">
+      <aside class="editor-sidebar">
+        <input id="taskSearch" class="task-search" placeholder="Search agenda…" oninput="renderEditorTaskList()">
+        <div id="editorTaskList" class="editor-task-list"></div>
+      </aside>
+      <div class="editor-main">
+        <div id="editorEmpty" class="editor-empty">Select an agenda item on the left to edit it.</div>
+        <div id="editorForm" style="display:none">
+          <div class="editor-title" style="margin-bottom:8px">
+            <div><div id="editTaskId" class="eyebrow" style="color:var(--blue)"></div><h2 id="editHeading" style="font-size:21px"></h2></div>
+            <div id="editStatus"></div>
+          </div>
+
+          <div class="editor-section">
+            <h3>Flowchart card</h3>
+            <div class="editor-grid">
+              <div class="edit-field"><label>Card heading / week</label><input id="editCardWeek"></div>
+              <div class="edit-field"><label>Card date line</label><input id="editCardDate"></div>
+            </div>
+            <div class="edit-field" style="margin-top:10px"><label>Card description</label><textarea id="editCardSummary"></textarea></div>
+          </div>
+
+          <div class="editor-section">
+            <h3>Agenda details</h3>
+            <div class="editor-grid">
+              <div class="edit-field"><label>Title</label><input id="editTitle"></div>
+              <div class="edit-field"><label>Kicker / category</label><input id="editKicker"></div>
+              <div class="edit-field"><label>Date / deadline</label><input id="editDate"><div class="help">The monthly calendar reads dates from this field. Examples: <b>9 Oct 2026</b>, <b>3–13 Nov 2026 · DFME 16 Nov</b>.</div></div>
+              <div class="edit-field"><label>Reminder date / instruction</label><input id="editReminder"><div class="help">Recognised date text also appears as orange reminder items in the monthly calendar.</div></div>
+              <div class="edit-field"><label>Owner</label><input id="editOwner"></div>
+              <div class="edit-field"><label>Audience</label><input id="editAudience"></div>
+            </div>
+            <div class="edit-field" style="margin-top:10px"><label>Notes / decision rule</label><textarea id="editNotes"></textarea></div>
+            <div class="edit-field" style="margin-top:10px"><label>Coordinator checklist — one item per line</label><textarea id="editChecklist" class="tall"></textarea></div>
+          </div>
+
+          <div class="editor-section">
+            <h3>Email templates</h3>
+            <div class="help">You can edit the existing email label, subject and body. Placeholders such as <b>{{coordinatorName}}</b>, <b>{{teamsLink}}</b> and <b>{{pr1Link}}</b> will still be replaced automatically from your Settings page.</div>
+            <div id="emailEditors"></div>
+            <button class="btn secondary" style="margin-top:10px" onclick="addEmailEditor()">＋ Add another email template</button>
+          </div>
+
+          <div class="editor-actions">
+            <button class="btn green" onclick="saveTaskEdit()">Save this agenda</button>
+            <button class="btn secondary" onclick="previewEditedTask()">Preview pop-up</button>
+            <button class="btn ghost" onclick="resetCurrentTaskEdit()">Restore original</button>
+            <button class="btn ghost" onclick="exportPlannerEdits()">Export edits JSON</button>
+            <label class="btn ghost" style="cursor:pointer">Import edits JSON<input type="file" accept="application/json" onchange="importPlannerEdits(event)" style="display:none"></label>
+            <button class="btn ghost" onclick="resetAllTaskEdits()">Reset all custom edits</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="modal" class="modal" onclick="backdropClose(event)">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><div id="modalKicker" class="eyebrow">Agenda</div><h2 id="modalTitle">Task</h2><p id="modalSubtitle"></p></div>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalMeta" class="meta"></div>
+      <div class="details-grid">
+        <div>
+          <div class="box"><h3>Coordinator checklist</h3><ul id="modalChecklist" class="checklist"></ul></div>
+          <div class="box" style="margin-top:12px"><h3>Notes / decision rule</h3><div id="modalNotes" style="font-size:13px;line-height:1.55;color:#4a5868"></div></div>
+        </div>
+        <div>
+          <div class="box"><h3>Ready-to-copy email(s)</h3><div id="modalEmails"></div></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="doneBtn" class="btn green" onclick="toggleDoneCurrent()">✓ Mark task complete</button>
+        <button class="btn ghost" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast">Copied</div>
+
+<script>
+const defaults = {
+  coordinatorName:'Dr Faris Syahmi', studentAreaLink:'[STUDENT PROJECT-AREA LINK]', svAreaLink:'[SUPERVISOR PROJECT-AREA / AVAILABILITY LINK]',
+  teamsLink:'[MS TEAMS LINK]', telegramLink:'[TELEGRAM LINK]', assignmentLink:'[STUDENT–SV ASSIGNMENT LIST LINK]',
+  pr1Link:'[PR1 SUBMISSION LINK]', pr2Link:'[PR2 SUBMISSION LINK]', logbookLink:'[LOGBOOK / PRESENTATION LINK]', surveyLink:'[FYP1 SURVEY LINK]',
+  briefing1Room:'[BRIEFING 1 ROOM]', briefing1Time:'[BRIEFING 1 TIME]', methodRoom:'[METHODOLOGY ROOM]', methodTime:'[METHODOLOGY TIME]', areaDeadline:'17 Aug 2026'
+};
+const settingIds = Object.keys(defaults);
+let currentTask = null;
+let calendarCursor = null;
+
+const tasks = {
+'area-refresh':{
+ title:'Refresh Project Areas — Students + Supervisors', kicker:'Pre-Semester · Recommended', date:'13–17 Aug 2026', reminder:'Send now / close by 17 Aug', owner:'FYP1 Coordinator', audience:'Students + Supervisors',
+ checklist:[
+  'Send the student project-area preference email and supervisor project-area/availability email on the same day.',
+  'Ask students to rank up to 10 preferred project areas and make clear that the first choice cannot be guaranteed.',
+  'Ask supervisors to review/update project area(s), confirm availability and indicate how many FYP1 students they can supervise.',
+  'Set one common response cut-off before the matching exercise.',
+  'Export both responses into the assignment/matching sheet and flag missing responses.'
+ ],
+ notes:'The Student Guide states that students select and rank a maximum of 10 project areas several weeks before FYP1 and that assignment prioritises preferred areas. This recommended window is compressed to ensure assignment is finished before Week 1.',
+ emails:[
+  {label:'Student email',subject:'Action Required: Update FYP1 Project Area Preferences – Sem 1 2026/2027',body:`Dear FYP1 students,\n\nAs preparation for Semester 1, Academic Year 2026/2027, please update and rank your preferred FYP project areas. You may rank up to 10 project areas.\n\nPlease complete your selection by {{areaDeadline}}:\n{{studentAreaLink}}\n\nThe project-area preferences will be used for the student–supervisor assignment. We will try to prioritise your preferred areas; however, assignment to the first choice is not guaranteed and will depend on supervisor availability.\n\nPlease ensure that you submit your response by the deadline so that the assignment can be completed before Week 1.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`},
+  {label:'Supervisor email',subject:'FYP1 Sem 1 2026/2027 – Update Project Area & Supervision Availability',body:`Dear Prof./Dr./Ts.,\n\nAs part of the preparation for FYP1 Semester 1, Academic Year 2026/2027, may I kindly request your help to review and update your project area(s), as well as confirm your availability for FYP1 supervision.\n\nPlease update the information by {{areaDeadline}} using the link below:\n{{svAreaLink}}\n\nIf applicable, please also indicate the number of FYP1 students you are able to supervise. The information will be used for student–supervisor assignment before the semester begins.\n\nThank you very much for your cooperation and support.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}
+ ]
+},
+'verify-lists':{
+ title:'Verify FYP1 Student List, Supervisor List & Capacity', kicker:'Pre-Semester · Recommended', date:'14–18 Aug 2026', reminder:'Before matching', owner:'FYP1 Coordinator', audience:'Internal',
+ checklist:['Verify the latest registered FYP1 student list.','Verify active supervisors and their availability/project areas.','Check supervisor capacity / maximum student load before matching.','Identify students or supervisors with missing project-area responses.','Create an exception list: unassigned students, overloaded supervisors, unavailable supervisors and special cases.'],
+ notes:'Do this immediately before matching. Keep one master list as the source of truth and record every manual override.',
+ emails:[{label:'Internal verification request',subject:'Verification Required – FYP1 Student & Supervisor Lists (Sem 1 2026/2027)',body:`Dear Dr.,\n\nI am preparing the FYP1 student–supervisor assignment for Semester 1, 2026/2027. Could you please help verify that the attached/current student and supervisor lists are the latest versions, including supervisor availability and project areas?\n\nI would like to finalise the matching before Week 1, so I would appreciate it if any corrections could be highlighted as soon as possible.\n\nThank you very much.\n\nBest regards,\n{{coordinatorName}}`}]
+},
+'room-booking':{
+ title:'Book Rooms for Two FYP1 Briefings', kicker:'Pre-Semester · Recommended', date:'Book by 17 Aug 2026', reminder:'Events on 28 Aug & 4 Sep', owner:'FYP1 Coordinator', audience:'Room / Admin booking',
+ checklist:['Book a room for FYP1 Intro Briefing on Friday, 28 Aug 2026.','Book a suitable room for Research & Design Methodology on Friday, 4 Sep 2026.','For Methodology, allow for a half-day intensive session and sufficient seating for the full FYP1 cohort.','Confirm AV/projector/microphone requirements.','Record room and time in the settings above so all email templates update automatically.','Send the FYP1 Intro Briefing reminder on 21 Aug; send Methodology reminder on 28 Aug.'],
+ notes:'The course outline describes the Research & Design Methodology class as a half-day intensive course held at the beginning of the semester.',
+ emails:[{label:'Room booking email',subject:'Room Booking Request – FYP1 Briefing & Research Methodology (Sem 1 2026/2027)',body:`Dear Sir/Madam,\n\nI would like to request room bookings for the following FYP1 activities for Semester 1, Academic Year 2026/2027:\n\n1. FYP1 Intro Briefing\nDate: Friday, 28 August 2026\nTime: {{briefing1Time}}\nPreferred room/capacity: suitable for the full FYP1 cohort\n\n2. FYP1 Research & Design Methodology\nDate: Friday, 4 September 2026\nTime: {{methodTime}}\nDuration: half-day session\nPreferred room/capacity: suitable for the full FYP1 cohort\n\nProjector/AV facilities will be required. Kindly let me know the available rooms.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'assignment':{
+ title:'Perform & Release Student–Supervisor Assignment', kicker:'Pre-Semester · Recommended', date:'18–20 Aug 2026', reminder:'Release before Week 1', owner:'FYP1 Coordinator', audience:'Students + Supervisors',
+ checklist:['Match students using ranked project-area preferences and supervisor availability.','Check that no supervisor exceeds the agreed capacity.','Check that every registered FYP1 student has an assigned supervisor.','Review manual overrides and special cases separately.','Publish one final assignment list only after verification.','Tell students to contact the assigned supervisor immediately and prepare Project Direction / Proposal before the Week 1 meeting.'],
+ notes:'The official milestone starts Week 1 with students expected to already have a Project Direction / Proposal before meeting the assigned supervisor, so assignment should be completed beforehand.',
+ emails:[
+  {label:'Student assignment announcement',subject:'FYP1 Student–Supervisor Assignment – Semester 1 2026/2027',body:`Dear FYP1 students,\n\nThe FYP1 student–supervisor assignment for Semester 1, Academic Year 2026/2027 has been completed.\n\nPlease check your assigned supervisor here:\n{{assignmentLink}}\n\nPlease contact your assigned supervisor as soon as possible. Before your first meeting in Week 1, you should prepare a preliminary Project Direction / Proposal so that the project title details can be discussed and finalised with your supervisor.\n\nIf there is any genuine issue with the assignment, please contact me promptly. Any change of supervisor is subject to the required approval, and the official milestone for change of supervisor is 4 September 2026.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`},
+  {label:'Supervisor assignment announcement',subject:'FYP1 Supervisee Assignment – Semester 1 2026/2027',body:`Dear Prof./Dr./Ts.,\n\nThe FYP1 student–supervisor assignment for Semester 1, Academic Year 2026/2027 has been finalised.\n\nThe assignment list is available here:\n{{assignmentLink}}\n\nStudents will be asked to contact their assigned supervisor and prepare a preliminary Project Direction / Proposal before the first meeting in Week 1. Kindly guide them in finalising the project title details and project direction.\n\nThank you very much for your support.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}
+ ]
+},
+'channels':{
+ title:'Create Telegram Group & MS Teams', kicker:'Pre-Semester · Recommended', date:'20–21 Aug 2026', reminder:'Before Week 1', owner:'FYP1 Coordinator', audience:'Students',
+ checklist:['Create the FYP1 MS Teams space and Telegram group.','Add/verify all registered FYP1 students.','Pin the milestone/planner, course outline, Student Guide and current forms/templates.','State clearly which channel is the official source for documents and deadlines.','Post the semester timeline and briefing details.','Use Telegram for quick reminders; keep official files/submissions in MS Teams or the chosen official platform.'],
+ notes:'Keeping one authoritative document location avoids confusion when reminders are repeated through multiple channels.',
+ emails:[{label:'Join Teams + Telegram',subject:'FYP1 Sem 1 2026/2027 – MS Teams & Telegram Group',body:`Dear FYP1 students,\n\nWelcome to FYP1 for Semester 1, Academic Year 2026/2027. Please join the following communication channels:\n\nMS Teams: {{teamsLink}}\nTelegram: {{telegramLink}}\n\nMS Teams will be used for official course documents, submission links and key announcements. Telegram will be used mainly for quick reminders and urgent coordination.\n\nPlease join both channels before Week 1 and ensure that your display name allows us to identify you clearly.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'submission-links':{
+ title:'Create & Publish FYP1 Submission Links', kicker:'Pre-Semester · Recommended', date:'20–21 Aug 2026', reminder:'Before Week 1', owner:'FYP1 Coordinator', audience:'Students + SV',
+ checklist:['Create PR1 submission folder/form with closing date 9 Oct 2026.','Create PR2 submission folder/form with closing date 27 Oct 2026.','Create logbook/presentation upload or tracking location for the 3–13 Nov evaluation window.','Prepare survey link/location before 2 Nov.','Set naming convention, e.g. StudentID_Name_PR1.pdf.','Test every link in a student-view/incognito session.','Publish links in one pinned MS Teams post and reuse those links in reminder emails.'],
+ notes:'The current milestone/planner provides the due dates. This page intentionally leaves the platform flexible because your current workflow may use Teams, Forms, SharePoint or another approved platform.',
+ emails:[{label:'Submission links announcement',subject:'FYP1 Submission Links & File Naming – Sem 1 2026/2027',body:`Dear FYP1 students,\n\nThe main FYP1 submission links for Semester 1, 2026/2027 are as follows:\n\nProgress Report 1: {{pr1Link}}\nProgress Report 2: {{pr2Link}}\nLogbook / Oral Presentation: {{logbookLink}}\nFYP1 Survey: {{surveyLink}}\n\nPlease follow the file-naming instructions stated in MS Teams and ensure that you submit before the stated deadlines. The official deadlines in the FYP planner remain applicable.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'week1-meet-sv':{
+ title:'Week 1: Students Meet Assigned Supervisors', kicker:'Official Milestone', date:'24 Aug 2026', reminder:'Assignment should already be released', owner:'Students / Supervisors', audience:'Students + SV',
+ checklist:['Confirm all students know their assigned supervisor.','Ask students to prepare a Project Direction / Proposal before the meeting.','Ask student and supervisor to discuss project scope, direction and working title.','Encourage regular/weekly supervisor meetings from this point onward.','Capture unresolved assignment issues immediately.'],
+ notes:'This is the first official FYP1 milestone in the Semester 1 calendar.',
+ emails:[{label:'Week 1 student reminder',subject:'FYP1 Week 1 Reminder – Meet Your Supervisor & Prepare Project Direction',body:`Dear FYP1 students,\n\nAs we begin Week 1, please make sure that you have contacted your assigned supervisor and arranged your first discussion.\n\nBefore the meeting, please prepare a preliminary Project Direction / Proposal. Use the discussion with your supervisor to refine the scope and finalise the project title details.\n\nAssignment list: {{assignmentLink}}\n\nRegular discussions with your supervisor are strongly encouraged throughout the semester.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'briefing1':{
+ title:'FYP1 Intro Briefing', kicker:'Official · Week 1', date:'28 Aug 2026', reminder:'Send reminder: 21 Aug 2026', owner:'All FYP1 Coordinators', audience:'Students',
+ checklist:['Confirm room and time.','Prepare briefing slides: FYP1 structure, assessment, semester timeline, communication channels, submission links and late-submission expectations.','Display student–SV assignment access point.','Explain change-of-supervisor process/cut-off.','Record attendance.','At the end, preview the Research & Design Methodology session on 4 Sep.'],
+ notes:'The course outline places the FYP1 course briefing in the first and/or second week of the semester.',
+ emails:[{label:'Student briefing reminder',subject:'Reminder: FYP1 Intro Briefing – Friday, 28 August 2026',body:`Dear FYP1 students,\n\nThis is a reminder for the FYP1 Intro Briefing for Semester 1, Academic Year 2026/2027.\n\nDate: Friday, 28 August 2026\nTime: {{briefing1Time}}\nVenue: {{briefing1Room}}\n\nThe briefing will cover the FYP1 workflow, assessments, key deadlines, student–supervisor coordination, communication channels and submission arrangements.\n\nPlease be punctual and make sure that you have joined the MS Teams and Telegram channels beforehand.\n\nMS Teams: {{teamsLink}}\nTelegram: {{telegramLink}}\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'methodology':{
+ title:'FYP1 Research & Design Methodology', kicker:'Official · Week 2', date:'4 Sep 2026', reminder:'Send reminder: 28 Aug 2026', owner:'All FYP1 Coordinators', audience:'Students',
+ checklist:['Confirm half-day room booking and AV facilities.','Coordinate facilitators/materials.','Cover project planning, information gathering/literature search, data collection/analysis, research proposal, technical writing, referencing and plagiarism.','Record attendance.','Remind students that 4 Sep is also the supervisor-change milestone.'],
+ notes:'The course outline describes this as a half-day intensive course at the beginning of the semester, with topics including literature search, data collection/analysis, proposal/report writing, referencing and plagiarism.',
+ emails:[{label:'Methodology reminder',subject:'Reminder: FYP1 Research & Design Methodology – Friday, 4 September 2026',body:`Dear FYP1 students,\n\nPlease be reminded of the FYP1 Research & Design Methodology session as follows:\n\nDate: Friday, 4 September 2026\nTime: {{methodTime}}\nVenue: {{methodRoom}}\nDuration: Half-day session\n\nThe session will cover research/project planning, literature and information search, research methodology, data collection/analysis, proposal and technical report writing, referencing and plagiarism.\n\nPlease be punctual and bring any materials requested by the facilitators.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'change-sv':{
+ title:'Change of Supervisor — Finalise Exceptions', kicker:'Official · Week 2', date:'4 Sep 2026', reminder:'Send reminder: 28 Aug 2026', owner:'Supervisors / FYP1 Coordinators / HoU / DDA', audience:'Students + SV',
+ checklist:['Collect only genuine supervisor-change requests.','Require a clear reason and acknowledgement from the relevant parties.','Route request for DDA/HoU approval as required.','Update the master assignment list only after approval.','Update Teams/records so later assessment allocation uses the final supervisor.'],
+ notes:'The milestone explicitly states that change of supervisor is subject to approval by DDA/HoU.',
+ emails:[{label:'Student/SV notice',subject:'FYP1 Supervisor Change – Final Cut-Off & Approval Requirement',body:`Dear FYP1 students and supervisors,\n\nA reminder that any request to change an FYP1 supervisor must be raised by Friday, 4 September 2026 and is subject to the required approval by the DDA / HoU.\n\nIf there is a genuine issue that requires a change, please contact me as soon as possible with the reason and relevant details. Please do not make an informal change without approval, as the official assignment record will be used for the remaining FYP1 assessment process.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'wkwpea':{
+ title:'Completion of WK–WP–EA Form', kicker:'Official · Week 5', date:'21 Sep 2026', reminder:'14 Sep 2026', owner:'FYP1 Coordinators / Supervisors', audience:'Supervisors',
+ checklist:['Send the reminder one week before the due date.','Share the current form/template and completion guidance.','Track completion by supervisor/student.','Follow up missing forms before 21 Sep.','Archive the completed forms for course-file evidence.'],
+ notes:'Official milestone: Completion of WK-WP-EA Form on Monday, 21 Sep 2026.',
+ emails:[{label:'Supervisor reminder',subject:'Reminder: FYP1 WK–WP–EA Form – Due 21 September 2026',body:`Dear Prof./Dr./Ts.,\n\nA friendly reminder that the FYP1 WK–WP–EA Form is scheduled for completion by Monday, 21 September 2026.\n\nKindly review and complete the required form for your FYP1 supervisee(s) before the deadline. The latest form/template is available in MS Teams:\n{{teamsLink}}\n\nThank you very much for your cooperation.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'title-approval':{
+ title:'FYP1 Project Title Approval by Course Coordinator', kicker:'Official · Week 6', date:'1 Oct 2026', reminder:'24 Sep 2026', owner:'FYP1 Coordinator', audience:'Students + SV / Internal',
+ checklist:['Export the latest project title list.','Check that every student has a finalised title and assigned supervisor.','Flag generic/incomplete titles for clarification with the supervisor.','Approve/update title details by the milestone date.','Freeze a dated copy of the approved title list for later use.'],
+ notes:'Planner wording: “Course Coordinator to approve FYP1 Project Title Details” on 1 Oct 2026.',
+ emails:[{label:'Supervisor title-check reminder',subject:'FYP1 Project Title Details – Please Finalise by 1 October 2026',body:`Dear Prof./Dr./Ts.,\n\nA reminder that the FYP1 project title details are scheduled for Course Coordinator approval on Thursday, 1 October 2026.\n\nKindly ensure that the project title and direction for your FYP1 supervisee(s) have been finalised before this date. If any title is still under revision, please update/notify me before the approval milestone.\n\nThank you for your support.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'pr1':{
+ title:'Progress Report 1 — Submission, Feedback & DFME', kicker:'Official · Week 7–8', date:'Student due 9 Oct · DFME 19 Oct', reminder:'Students: 2 Oct · SV: 12 Oct', owner:'Students / Supervisors', audience:'Students + SV',
+ checklist:['Send student reminder on 2 Oct (one week before PR1 due).','Keep PR1 submission link visible in Teams and test access.','After submission closes, provide supervisor access to assigned student reports.','Send SV reminder on 12 Oct for feedback/marks before 19 Oct DFME.','Track non-submission and missing marks separately.','Keep a timestamped submission record.'],
+ notes:'The current milestone/planner lists PR1 submission due Friday, 9 Oct 2026 and PR1 collection from supervisor / DFME on Monday, 19 Oct 2026.',
+ emails:[
+  {label:'Student reminder',subject:'Reminder: FYP1 Progress Report 1 Due 9 October 2026',body:`Dear FYP1 students,\n\nThis is a one-week reminder that Progress Report 1 (PR1) is due on Friday, 9 October 2026.\n\nSubmission link:\n{{pr1Link}}\n\nPlease make sure that your report is complete, correctly named and submitted before the deadline. Do not wait until the last minute to upload your file.\n\nIf you are unsure about the content or progress, please discuss it with your supervisor before submission.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`},
+  {label:'Supervisor marking reminder',subject:'Reminder: FYP1 PR1 Feedback / Marks – DFME 19 October 2026',body:`Dear Prof./Dr./Ts.,\n\nA friendly reminder regarding FYP1 Progress Report 1. The milestone for PR1 collection from supervisor / DFME is Monday, 19 October 2026.\n\nKindly complete the required review/feedback and marks for your FYP1 supervisee(s) before the deadline.\n\nThe PR1 materials/submissions are available through MS Teams:\n{{teamsLink}}\n\nThank you very much for your cooperation.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}
+ ]
+},
+'pr2':{
+ title:'Progress Report 2 — Submission, Feedback & DFME', kicker:'Official · Week 9–10', date:'Student due 27 Oct · DFME 2 Nov', reminder:'Students: 20 Oct · SV: 26 Oct', owner:'Students / Supervisors', audience:'Students + SV',
+ checklist:['Send student reminder on 20 Oct.','Monitor PR2 submissions and keep proof of submission time.','Provide supervisors access after the student submission deadline.','Send supervisor reminder on 26 Oct for 2 Nov DFME.','Follow up missing student submissions and missing marks separately.'],
+ notes:'The current milestone/planner lists PR2 submission due Tuesday, 27 Oct 2026 and PR2 collection from supervisor / DFME on Monday, 2 Nov 2026.',
+ emails:[
+  {label:'Student reminder',subject:'Reminder: FYP1 Progress Report 2 Due 27 October 2026',body:`Dear FYP1 students,\n\nThis is a one-week reminder that Progress Report 2 (PR2) is due on Tuesday, 27 October 2026.\n\nSubmission link:\n{{pr2Link}}\n\nPlease ensure that your report is complete, correctly named and submitted before the deadline. Please also discuss your work plan, methodology/approach and expected project output clearly with your supervisor before submission.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`},
+  {label:'Supervisor marking reminder',subject:'Reminder: FYP1 PR2 Feedback / Marks – DFME 2 November 2026',body:`Dear Prof./Dr./Ts.,\n\nA friendly reminder that the FYP1 PR2 collection from supervisor / DFME milestone is Monday, 2 November 2026.\n\nKindly complete the required review/feedback and marks for your FYP1 supervisee(s) before the deadline.\n\nFYP1 MS Teams:\n{{teamsLink}}\n\nThank you very much for your support.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}
+ ]
+},
+'oral-logbook':{
+ title:'FYP1 Oral Presentation & Logbook', kicker:'Official · Week 10–12', date:'3–13 Nov 2026 · DFME 16 Nov', reminder:'27 Oct / 6 Nov / 9 Nov', owner:'Coordinator / Students / SV / Examiners', audience:'Students + SV + Examiners',
+ checklist:['Prepare oral presentation schedule before the evaluation window.','Assign examiner(s) and avoid supervisor/examiner conflicts.','Publish venue/online link, time slot and presentation rules.','Send start-window reminder on 27 Oct.','Send final-window reminder on 6 Nov.','Confirm logbook submission/availability for evaluation.','Send SV/examiner marks-entry reminder on 9 Nov for 16 Nov DFME.','Track absent students immediately because oral presentation is a critical assessment.'],
+ notes:'Official window: Oral Presentation FYP1 & Submit Logbook starts 3 Nov and ends 13 Nov; DFME and logbook collection milestone is 16 Nov.',
+ emails:[
+  {label:'Student presentation reminder',subject:'Reminder: FYP1 Oral Presentation & Logbook – 3 to 13 November 2026',body:`Dear FYP1 students,\n\nThe FYP1 Oral Presentation and Logbook evaluation period will run from Tuesday, 3 November to Friday, 13 November 2026.\n\nPlease check your presentation schedule carefully and make sure that your logbook is complete and available/submitted as instructed.\n\nSchedule / submission information:\n{{logbookLink}}\n\nPlease be punctual for your assigned session and be prepared to explain your project literature review, methodology, work plan and expected outcomes, as well as answer questions from the assessors.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`},
+  {label:'SV / examiner marks reminder',subject:'Reminder: FYP1 Oral Presentation & Logbook Marks – DFME 16 November 2026',body:`Dear Prof./Dr./Ts.,\n\nA friendly reminder that the DFME for the FYP1 Oral Presentation and Logbook is Monday, 16 November 2026.\n\nKindly ensure that all required oral-presentation and logbook evaluation marks for your assigned student(s) have been completed before the deadline.\n\nRelevant schedule/materials:\n{{logbookLink}}\n\nThank you very much for your cooperation.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}
+ ]
+},
+'survey':{
+ title:'FYP1 Survey', kicker:'Official · Week 10–12', date:'2–20 Nov 2026', reminder:'13 Nov 2026', owner:'Students / Coordinator', audience:'Students',
+ checklist:['Publish/open the survey on 2 Nov.','Post the survey link in Teams and Telegram.','Monitor response rate.','Send final one-week reminder on 13 Nov.','Send a short last-day nudge on 20 Nov only if responses are still missing.'],
+ notes:'The milestone states that the FYP1 Survey starts 2 Nov, ends 20 Nov and is compulsory.',
+ emails:[{label:'Survey reminder',subject:'Reminder: Compulsory FYP1 Survey Closes 20 November 2026',body:`Dear FYP1 students,\n\nA reminder that the FYP1 Survey is compulsory and will close on Friday, 20 November 2026.\n\nPlease complete the survey before the closing date:\n{{surveyLink}}\n\nIf you have already completed it, no further action is required.\n\nThank you for your cooperation.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'grading':{
+ title:'Submission of FYP1 Grading to HoU & DDA', kicker:'Official · Week 15', date:'9 Dec 2026', reminder:'2 Dec 2026', owner:'All FYP1 Coordinators', audience:'Internal',
+ checklist:['Check PR1, PR2, Oral Presentation and Logbook marks are complete.','Resolve missing marks or student anomalies.','Verify total calculation and grade boundaries in the official system.','Submit FYP1 grading to HoU & DDA by 9 Dec.','Keep a dated copy/export for the course file.'],
+ notes:'Official milestone: Submission of FYP1 Grading to HoU & DDA on Wednesday, 9 Dec 2026.',
+ emails:[{label:'Internal marks reminder',subject:'FYP1 Sem 1 2026/2027 – Final Marks Completion Before 9 December',body:`Dear Prof./Dr./Ts.,\n\nI am currently finalising the FYP1 grading for Semester 1, 2026/2027 for submission to HoU & DDA on Wednesday, 9 December 2026.\n\nKindly ensure that any outstanding FYP1 assessment marks under your responsibility have been completed as soon as possible. If there is any issue with a student record or mark entry, please let me know so that it can be resolved before final submission.\n\nThank you very much for your cooperation.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+},
+'course-file':{
+ title:'Completion of OBEOS & Course File', kicker:'Official · Week 22', date:'25 Jan 2027', reminder:'18 Jan 2027', owner:'All FYP1 Coordinators', audience:'Internal',
+ checklist:['Complete OBEOS.','Compile course outline, planner/milestone, briefing materials and attendance evidence.','Archive assessment instructions, rubrics, samples and marks.','Archive student–SV assignment evidence and approved project title list.','Archive WK–WP–EA forms and communication/reminder evidence.','Complete any required moderation/analysis documentation.','Close the course file by 25 Jan 2027.'],
+ notes:'Official milestone: Completion of OBEOS & Course File on Monday, 25 Jan 2027.',
+ emails:[{label:'Internal close-out reminder',subject:'FYP1 Course File / OBEOS Completion – Due 25 January 2027',body:`Dear all,\n\nA reminder that the FYP1 OBEOS and Course File completion milestone for Semester 1, 2026/2027 is Monday, 25 January 2027.\n\nPlease ensure that all required assessment records, evidence and supporting documents are complete and available for the course file before the deadline.\n\nThank you.\n\nBest regards,\n{{coordinatorName}}\nFYP1 Coordinator`}]
+}
+};
+
+// --- Editable planner state -------------------------------------------------
+const originalTasks = JSON.parse(JSON.stringify(tasks));
+const originalCards = {};
+document.querySelectorAll('.node').forEach(n=>{
+  originalCards[n.dataset.id] = {
+    cardWeek:n.querySelector('.week')?.textContent || '',
+    cardSummary:n.querySelector('p')?.textContent || '',
+    cardDate:n.querySelector('.date')?.textContent || ''
+  };
+});
+let editorTaskId = null;
+
+function taskEdits(){
+  try{return JSON.parse(localStorage.getItem('fyp1taskedits')||'{}')}catch(e){return {}}
+}
+function generalEdits(){
+  try{return JSON.parse(localStorage.getItem('fyp1general')||'{}')}catch(e){return {}}
+}
+function deepClone(x){return JSON.parse(JSON.stringify(x));}
+function applySavedTaskEdits(){
+  const edits=taskEdits();
+  Object.keys(originalTasks).forEach(id=>{
+    tasks[id]=deepClone(originalTasks[id]);
+    if(edits[id]) Object.assign(tasks[id],deepClone(edits[id]));
+  });
+  refreshTaskCards();
+  refreshReminderTable();
+  renderEditorTaskList();
+  updateCustomCount();
+  renderCalendar();
+}
+function refreshTaskCards(){
+  const edits=taskEdits();
+  document.querySelectorAll('.node').forEach(n=>{
+    const id=n.dataset.id, t=tasks[id], c=originalCards[id]||{};
+    if(!t)return;
+    const custom=edits[id]||{};
+    const w=n.querySelector('.week'), h=n.querySelector('h3'), p=n.querySelector('p'), d=n.querySelector('.date');
+    if(w)w.textContent=custom.cardWeek ?? c.cardWeek ?? t.kicker;
+    if(h)h.textContent=t.title;
+    if(p)p.textContent=custom.cardSummary ?? c.cardSummary ?? t.notes;
+    if(d)d.textContent=custom.cardDate ?? c.cardDate ?? t.date;
+    let chip=n.querySelector('.chip.custom');
+    if(custom && Object.keys(custom).length){
+      if(!chip){chip=document.createElement('span');chip.className='chip custom';chip.textContent='Customized';n.querySelector('.chips')?.appendChild(chip)}
+    }else if(chip) chip.remove();
+  });
+}
+function refreshReminderTable(){
+  const tb=document.getElementById('reminderTableBody'); if(!tb)return;
+  const ids=['briefing1','methodology','change-sv','wkwpea','title-approval','pr1','pr2','oral-logbook','survey','grading','course-file'];
+  tb.innerHTML=ids.map(id=>{
+    const t=tasks[id]; if(!t)return '';
+    return `<tr><td>${esc(t.reminder)}</td><td>${esc(t.title)}</td><td>${esc(t.date)}</td><td><span class="tag">${esc(t.audience)}</span></td></tr>`;
+  }).join('');
+}
+function setPlannerView(view){
+  const editor=view==='editor', calendar=view==='calendar';
+  document.body.classList.toggle('editor-mode',editor);
+  document.body.classList.toggle('calendar-mode',calendar);
+  const eb=document.getElementById('editorToggleBtn'), cb=document.getElementById('calendarToggleBtn');
+  if(eb)eb.textContent=editor?'← Back to Command Centre':'✏ Edit Dates & Content';
+  if(cb)cb.textContent=calendar?'← Back to Command Centre':'🗓 Monthly Calendar';
+  if(editor){loadGeneralEditor();renderEditorTaskList();}
+  if(calendar)renderCalendar();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleEditorPage(){
+  setPlannerView(document.body.classList.contains('editor-mode')?'main':'editor');
+}
+function toggleCalendarPage(){
+  setPlannerView(document.body.classList.contains('calendar-mode')?'main':'calendar');
+}
+function calendarBase(){
+  const g={semesterStart:'2026-08-24',...generalEdits()};
+  const d=new Date((g.semesterStart||'2026-08-24')+'T00:00:00');
+  return isNaN(d)?new Date(2026,7,24):d;
+}
+function inferCalendarYear(monthIndex, explicitYear){
+  if(explicitYear)return Number(explicitYear);
+  const base=calendarBase();
+  return monthIndex>=base.getMonth()?base.getFullYear():base.getFullYear()+1;
+}
+function monthIndexFromText(token){
+  const m={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  return m[String(token||'').slice(0,3).toLowerCase()];
+}
+function isoFromParts(day,monthIndex,year){
+  const d=new Date(year,monthIndex,Number(day));
+  if(d.getFullYear()!==year||d.getMonth()!==monthIndex||d.getDate()!==Number(day))return null;
+  return `${year}-${String(monthIndex+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+function extractDateEntries(text){
+  text=String(text||'').replace(/—/g,'–');
+  const entries=[], consumed=[];
+  const mon='Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?';
+  const rangeRe=new RegExp(`(\\d{1,2})\\s*[–-]\\s*(\\d{1,2})\\s+(${mon})\\s*(\\d{4})?`,'gi');
+  let m;
+  while((m=rangeRe.exec(text))){
+    const mi=monthIndexFromText(m[3]), y=inferCalendarYear(mi,m[4]);
+    const a=isoFromParts(m[1],mi,y), b=isoFromParts(m[2],mi,y);
+    if(a)entries.push({iso:a,role:'start'}); if(b)entries.push({iso:b,role:'end'});
+    consumed.push([m.index,m.index+m[0].length]);
+  }
+  const singleRe=new RegExp(`(\\d{1,2})\\s+(${mon})\\s*(\\d{4})?`,'gi');
+  while((m=singleRe.exec(text))){
+    if(consumed.some(([a,b])=>m.index>=a&&m.index<b))continue;
+    const mi=monthIndexFromText(m[2]), y=inferCalendarYear(mi,m[3]);
+    const iso=isoFromParts(m[1],mi,y); if(iso)entries.push({iso,role:'date'});
+  }
+  const seen=new Set();
+  return entries.filter(e=>{const k=e.iso+'|'+e.role;if(seen.has(k))return false;seen.add(k);return true;});
+}
+function allCalendarEvents(){
+  const out=[];
+  Object.entries(tasks).forEach(([id,t])=>{
+    extractDateEntries(t.date).forEach(e=>out.push({...e,id,title:t.title,kind:'event'}));
+    extractDateEntries(t.reminder).forEach(e=>out.push({...e,id,title:t.title,kind:'reminder'}));
+  });
+  return out;
+}
+function dateIsoLocal(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function ensureCalendarCursor(){
+  if(calendarCursor)return;
+  const now=new Date(), base=calendarBase();
+  const low=new Date(base);low.setDate(low.getDate()-31);
+  const high=new Date(base);high.setMonth(high.getMonth()+7);
+  const chosen=(now>=low&&now<=high)?now:base;
+  calendarCursor=new Date(chosen.getFullYear(),chosen.getMonth(),1);
+}
+function renderCalendar(){
+  const grid=document.getElementById('calendarGrid'), label=document.getElementById('calendarMonthLabel');
+  if(!grid||!label)return;
+  ensureCalendarCursor();
+  const y=calendarCursor.getFullYear(), mo=calendarCursor.getMonth();
+  label.textContent=calendarCursor.toLocaleDateString('en-MY',{month:'long',year:'numeric'});
+  const events=allCalendarEvents(), map={};
+  events.forEach(e=>(map[e.iso]||(map[e.iso]=[])).push(e));
+  const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  let html=weekdays.map(x=>`<div class="calendar-weekday">${x}</div>`).join('');
+  const first=new Date(y,mo,1), offset=(first.getDay()+6)%7, start=new Date(y,mo,1-offset), today=dateIsoLocal(new Date()), done=completed();
+  for(let i=0;i<42;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);const iso=dateIsoLocal(d), inMonth=d.getMonth()===mo, evs=map[iso]||[];
+    const cls=['calendar-day',!inMonth?'outside':'',iso===today?'today':'',evs.length?'has-events':''].filter(Boolean).join(' ');
+    const eventHtml=evs.map(e=>{
+      const role=e.kind==='reminder'?'Reminder':(e.role==='start'?'Start':e.role==='end'?'End':'Agenda');
+      const ec=['cal-event',e.kind==='reminder'?'reminder':'',done[e.id]?'done':''].filter(Boolean).join(' ');
+      return `<button class="${ec}" data-calendar-task="${attrEsc(e.id)}"><span class="event-role">${role}</span>${esc(e.title)}</button>`;
+    }).join('');
+    html+=`<div class="${cls}"><div class="calendar-day-head"><span class="calendar-day-num">${d.getDate()}</span>${iso===today?'<span class="today-pill">Today</span>':''}</div><div class="calendar-events">${eventHtml}</div></div>`;
+  }
+  grid.innerHTML=html;
+  grid.querySelectorAll('[data-calendar-task]').forEach(b=>b.addEventListener('click',()=>openTask(b.dataset.calendarTask)));
+  const note=document.getElementById('calendarEmptyNote');
+  const undated=Object.entries(tasks).filter(([id,t])=>extractDateEntries(t.date).length===0);
+  if(note){
+    if(undated.length){note.style.display='block';note.innerHTML=`<b>Not shown on calendar:</b> ${undated.map(([id,t])=>esc(t.title)).join(', ')}. Add a recognisable date such as <b>9 Oct 2026</b> in the agenda editor if you want these items to appear.`;}
+    else note.style.display='none';
+  }
+}
+function moveCalendarMonth(delta){ensureCalendarCursor();calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+delta,1);renderCalendar();}
+function goCalendarSemesterStart(){const b=calendarBase();calendarCursor=new Date(b.getFullYear(),b.getMonth(),1);renderCalendar();}
+function goCalendarToday(){const d=new Date();calendarCursor=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();}
+function loadGeneralEditor(){
+  const g={semesterStart:'2026-08-24',semesterStartLabel:'24 Aug 2026',reminderRule:'Main reminder: 7 days before',...generalEdits()};
+  document.getElementById('editSemesterStart').value=g.semesterStart;
+  document.getElementById('editSemesterStartLabel').value=g.semesterStartLabel;
+  document.getElementById('editReminderRule').value=g.reminderRule;
+}
+function saveGeneralEdits(){
+  const g={semesterStart:document.getElementById('editSemesterStart').value||'2026-08-24',semesterStartLabel:document.getElementById('editSemesterStartLabel').value.trim()||'24 Aug 2026',reminderRule:document.getElementById('editReminderRule').value.trim()||'Main reminder: 7 days before'};
+  localStorage.setItem('fyp1general',JSON.stringify(g));markLocalChange();applyGeneralEdits();showToast('Semester settings saved');
+}
+function applyGeneralEdits(){
+  const g={semesterStart:'2026-08-24',semesterStartLabel:'24 Aug 2026',...generalEdits()};
+  const header=document.querySelector('.countdown b');if(header)header.textContent=g.semesterStartLabel;
+  updateCountdown();
+  renderCalendar();
+}
+function renderEditorTaskList(){
+  const box=document.getElementById('editorTaskList');if(!box)return;
+  const q=(document.getElementById('taskSearch')?.value||'').toLowerCase().trim();
+  const edits=taskEdits();
+  box.innerHTML=Object.keys(tasks).filter(id=>{
+    const t=tasks[id];return !q || (id+' '+t.title+' '+t.kicker+' '+t.date).toLowerCase().includes(q);
+  }).map(id=>`<button class="editor-task-btn ${editorTaskId===id?'active':''}" onclick="loadTaskEditor('${id}')">${esc(tasks[id].title)}${edits[id]?'<span style="float:right">✎</span>':''}<small>${esc(tasks[id].date)}</small></button>`).join('');
+}
+function loadTaskEditor(id){
+  editorTaskId=id; const t=tasks[id], c=originalCards[id]||{}, e=taskEdits()[id]||{};
+  document.getElementById('editorEmpty').style.display='none';document.getElementById('editorForm').style.display='block';
+  document.getElementById('editTaskId').textContent='Agenda ID: '+id;
+  document.getElementById('editHeading').textContent=t.title;
+  document.getElementById('editStatus').innerHTML=e&&Object.keys(e).length?'<span class="customized-badge">✎ Customized</span>':'<span class="tag">Original</span>';
+  document.getElementById('editCardWeek').value=e.cardWeek ?? c.cardWeek ?? '';
+  document.getElementById('editCardDate').value=e.cardDate ?? c.cardDate ?? '';
+  document.getElementById('editCardSummary').value=e.cardSummary ?? c.cardSummary ?? '';
+  document.getElementById('editTitle').value=t.title||'';document.getElementById('editKicker').value=t.kicker||'';
+  document.getElementById('editDate').value=t.date||'';document.getElementById('editReminder').value=t.reminder||'';
+  document.getElementById('editOwner').value=t.owner||'';document.getElementById('editAudience').value=t.audience||'';
+  document.getElementById('editNotes').value=t.notes||'';document.getElementById('editChecklist').value=(t.checklist||[]).join('\n');
+  renderEmailEditors(t.emails||[]);renderEditorTaskList();
+}
+function renderEmailEditors(emails){
+  const box=document.getElementById('emailEditors'); if(!box)return;
+  box.innerHTML=emails.map((e,i)=>emailEditorHtml(e,i)).join('');
+}
+function emailEditorHtml(e={},i=0){
+  return `<div class="email-editor" data-email-index="${i}"><div class="email-editor-head"><b>Email ${i+1}</b><button class="mini" onclick="removeEmailEditor(${i})">Remove</button></div>
+    <div class="editor-grid"><div class="edit-field"><label>Label</label><input class="ee-label" value="${attrEsc(e.label||'')}"></div><div class="edit-field"><label>Subject</label><input class="ee-subject" value="${attrEsc(e.subject||'')}"></div></div>
+    <div class="edit-field" style="margin-top:9px"><label>Body</label><textarea class="ee-body tall">${esc(e.body||'')}</textarea></div></div>`;
+}
+function attrEsc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function collectEmailEditors(){
+  return [...document.querySelectorAll('#emailEditors .email-editor')].map(el=>({label:el.querySelector('.ee-label').value.trim()||'Email',subject:el.querySelector('.ee-subject').value.trim(),body:el.querySelector('.ee-body').value}));
+}
+function addEmailEditor(){const emails=collectEmailEditors();emails.push({label:'New email',subject:'',body:''});renderEmailEditors(emails);}
+function removeEmailEditor(i){const emails=collectEmailEditors();emails.splice(i,1);renderEmailEditors(emails);}
+function saveTaskEdit(){
+  if(!editorTaskId)return;
+  const edits=taskEdits();
+  edits[editorTaskId]={
+    cardWeek:document.getElementById('editCardWeek').value.trim(),cardDate:document.getElementById('editCardDate').value.trim(),cardSummary:document.getElementById('editCardSummary').value.trim(),
+    title:document.getElementById('editTitle').value.trim(),kicker:document.getElementById('editKicker').value.trim(),date:document.getElementById('editDate').value.trim(),reminder:document.getElementById('editReminder').value.trim(),owner:document.getElementById('editOwner').value.trim(),audience:document.getElementById('editAudience').value.trim(),notes:document.getElementById('editNotes').value.trim(),
+    checklist:document.getElementById('editChecklist').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),emails:collectEmailEditors()
+  };
+  localStorage.setItem('fyp1taskedits',JSON.stringify(edits));markLocalChange();applySavedTaskEdits();loadTaskEditor(editorTaskId);showToast('Agenda changes saved');
+}
+function resetCurrentTaskEdit(){
+  if(!editorTaskId)return;if(!confirm('Restore this agenda to the original planner content?'))return;
+  const edits=taskEdits();delete edits[editorTaskId];localStorage.setItem('fyp1taskedits',JSON.stringify(edits));markLocalChange();applySavedTaskEdits();loadTaskEditor(editorTaskId);showToast('Original agenda restored');
+}
+function resetAllTaskEdits(){
+  if(!confirm('Remove ALL customized dates and content and restore the original planner?'))return;
+  localStorage.removeItem('fyp1taskedits');markLocalChange();applySavedTaskEdits();if(editorTaskId)loadTaskEditor(editorTaskId);showToast('All custom edits removed');
+}
+function previewEditedTask(){if(editorTaskId){saveTaskEdit();setTimeout(()=>openTask(editorTaskId),20)}}
+function updateCustomCount(){const n=Object.keys(taskEdits()).length;const el=document.getElementById('customCount');if(el)el.textContent=`${n} customized item${n===1?'':'s'}`;}
+function exportPlannerEdits(){
+  const payload={version:1,exportedAt:new Date().toISOString(),general:generalEdits(),taskEdits:taskEdits()};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='FYP1_Planner_Custom_Edits.json';a.click();URL.revokeObjectURL(a.href);showToast('Edits JSON exported');
+}
+function importPlannerEdits(ev){
+  const f=ev.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(data.taskEdits)localStorage.setItem('fyp1taskedits',JSON.stringify(data.taskEdits));if(data.general)localStorage.setItem('fyp1general',JSON.stringify(data.general));markLocalChange();applySavedTaskEdits();applyGeneralEdits();loadGeneralEditor();if(editorTaskId)loadTaskEditor(editorTaskId);showToast('Planner edits imported');}catch(e){alert('Could not import this JSON file.')}};r.readAsText(f);ev.target.value='';
+}
+
+function getSettings(){
+  const saved = JSON.parse(localStorage.getItem('fyp1settings') || '{}');
+  return {...defaults,...saved};
+}
+function applySettingsToInputs(){const s=getSettings();settingIds.forEach(id=>{const el=document.getElementById(id);if(el)el.value=(s[id]&& !String(s[id]).startsWith('['))?s[id]:(id==='coordinatorName'||id==='areaDeadline'?s[id]:'');});}
+function saveSettings(){
+  const s={}; settingIds.forEach(id=>{const v=document.getElementById(id).value.trim();s[id]=v||defaults[id];});
+  localStorage.setItem('fyp1settings',JSON.stringify(s)); markLocalChange(); showToast('Settings saved'); if(currentTask) openTask(currentTask);
+}
+function clearSettings(){localStorage.removeItem('fyp1settings');markLocalChange();applySettingsToInputs();showToast('Saved values cleared');}
+function toggleSettings(){
+  if(document.body.classList.contains('editor-mode')||document.body.classList.contains('calendar-mode'))setPlannerView('main');
+  document.getElementById('settings').classList.toggle('open');
+}
+function scrollToReminders(){
+  if(document.body.classList.contains('editor-mode')||document.body.classList.contains('calendar-mode'))setPlannerView('main');
+  setTimeout(()=>document.getElementById('reminders').scrollIntoView({behavior:'smooth'}),40);
+}
+function renderTemplate(txt){const s=getSettings();return txt.replace(/{{(.*?)}}/g,(m,k)=>s[k]||defaults[k]||m);}
+function esc(s){return String(s).replace(/[&<>]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));}
+
+function openTask(id){
+  currentTask=id; const t=tasks[id]; if(!t)return;
+  document.getElementById('modalKicker').textContent=t.kicker;
+  document.getElementById('modalTitle').textContent=t.title;
+  document.getElementById('modalSubtitle').textContent=t.notes.split('.')[0]+'.';
+  document.getElementById('modalMeta').innerHTML=`
+    <div><small>Date</small><b>${esc(t.date)}</b></div>
+    <div><small>Reminder</small><b>${esc(t.reminder)}</b></div>
+    <div><small>Owner</small><b>${esc(t.owner)}</b></div>
+    <div><small>Audience</small><b>${esc(t.audience)}</b></div>`;
+  document.getElementById('modalChecklist').innerHTML=t.checklist.map(x=>`<li>${esc(x)}</li>`).join('');
+  document.getElementById('modalNotes').textContent=t.notes;
+  const emailHtml=t.emails.map((e,i)=>{
+    const subject=renderTemplate(e.subject), body=renderTemplate(e.body);
+    return `<div class="email-block">
+      <div class="email-top"><b>${esc(e.label)}</b><div class="email-actions">
+        <button class="mini" onclick="copyText(${JSON.stringify(subject)})">Copy subject</button>
+        <button class="mini" onclick="copyText(${JSON.stringify(body)})">Copy body</button>
+        <button class="mini copyall" onclick="copyText(${JSON.stringify('Subject: '+subject+'\n\n'+body)})">Copy all</button>
+      </div></div>
+      <div class="subject"><strong>Subject:</strong> ${esc(subject)}</div>
+      <pre class="email">${esc(body)}</pre>
+    </div>`;
+  }).join('');
+  document.getElementById('modalEmails').innerHTML=emailHtml;
+  updateDoneBtn();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+function backdropClose(e){if(e.target.id==='modal')closeModal();}
+function copyText(text){navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard')).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('Copied to clipboard');});}
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');}
+function completed(){return JSON.parse(localStorage.getItem('fyp1done')||'{}');}
+function toggleDoneCurrent(){if(!currentTask)return;const d=completed();d[currentTask]=!d[currentTask];localStorage.setItem('fyp1done',JSON.stringify(d));markLocalChange();applyDone();renderCalendar();updateDoneBtn();showToast(d[currentTask]?'Task marked complete':'Task reopened');}
+function updateDoneBtn(){const d=completed();const b=document.getElementById('doneBtn');if(!currentTask)return;b.textContent=d[currentTask]?'↺ Mark as not complete':'✓ Mark task complete';b.className=d[currentTask]?'btn secondary':'btn green';}
+function applyDone(){const d=completed();document.querySelectorAll('.node').forEach(n=>n.classList.toggle('done',!!d[n.dataset.id]));}
+function resetCompletion(){if(confirm('Reset all completed-task marks?')){localStorage.removeItem('fyp1done');markLocalChange();applyDone();renderCalendar();showToast('Task status reset');}}
+function updateCountdown(){
+  const g={semesterStart:'2026-08-24',...generalEdits()}; const start=new Date(g.semesterStart+'T00:00:00'); const now=new Date(); const diff=Math.ceil((start-now)/(1000*60*60*24)); const el=document.getElementById('countdownText');
+  if(diff>0)el.textContent=`${diff} day${diff===1?'':'s'} to Week 1`;
+  else if(diff===0)el.textContent='Week 1 starts today';
+  else el.textContent=`Semester is in progress`;
+}
+// --- Supabase cloud sync ----------------------------------------------------
+let sbClient = null;
+let sbUser = null;
+let cloudSyncTimer = null;
+let cloudSyncBusy = false;
+
+function cloudConfig(){
+  try{return JSON.parse(localStorage.getItem('fyp1cloudconfig')||'{}')}catch(e){return {}}
+}
+function cloudConfigValues(){
+  const c=cloudConfig();
+  return {
+    url:c.url||'', key:c.key||'', plannerKey:c.plannerKey||'sem1-2026-2027',
+    email:c.email||'', autoSync:c.autoSync!==false
+  };
+}
+function applyCloudConfigToInputs(){
+  const c=cloudConfigValues();
+  const map={supabaseUrl:c.url,supabaseKey:c.key,supabasePlannerKey:c.plannerKey,supabaseEmail:c.email};
+  Object.entries(map).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.value=v||''});
+  const a=document.getElementById('cloudAutoSync');if(a)a.checked=c.autoSync;
+  const last=localStorage.getItem('fyp1lastcloudsync');const l=document.getElementById('supabaseLastSync');if(l)l.value=last?new Date(last).toLocaleString('en-MY'):'Never';
+}
+function setCloudStatus(text,type=''){
+  const box=document.getElementById('cloudStatus'), txt=document.getElementById('cloudStatusText'), badge=document.getElementById('toolbarCloudBadge');
+  if(txt)txt.textContent=text;
+  if(box){box.className='cloud-status'+(type?' '+type:'')}
+  if(badge){badge.textContent=type==='connected'?'Cloud on':(type==='error'?'Cloud error':'Local only');badge.className='toolbar-cloud-badge'+(type==='connected'?' online':'')}
+}
+function setCloudMessage(text,type=''){
+  const el=document.getElementById('cloudMessage');if(!el)return;el.textContent=text;el.className='cloud-message'+(type?' '+type:'');
+}
+function toggleCloudSettings(){
+  if(document.body.classList.contains('editor-mode')||document.body.classList.contains('calendar-mode'))setPlannerView('main');
+  const el=document.getElementById('cloudSettings');el.classList.toggle('open');
+  if(el.classList.contains('open')){applyCloudConfigToInputs();initSupabaseClient(false)}
+}
+function saveCloudConfig(){
+  const prev=cloudConfigValues();
+  const url=document.getElementById('supabaseUrl')?.value.trim()||'';
+  const key=document.getElementById('supabaseKey')?.value.trim()||'';
+  const plannerKey=document.getElementById('supabasePlannerKey')?.value.trim()||'sem1-2026-2027';
+  const email=document.getElementById('supabaseEmail')?.value.trim()||'';
+  const autoSync=!!document.getElementById('cloudAutoSync')?.checked;
+  localStorage.setItem('fyp1cloudconfig',JSON.stringify({url,key,plannerKey,email,autoSync}));
+  const credentialsChanged=url!==prev.url||key!==prev.key;
+  if(credentialsChanged){sbClient=null;sbUser=null;}
+  applyCloudConfigToInputs();
+  initSupabaseClient(false);
+  showToast('Supabase connection settings saved');
+}
+function initSupabaseClient(showErrors=true){
+  const c=cloudConfigValues();
+  if(!c.url||!c.key){setCloudStatus('Not configured');return null;}
+  if(!window.supabase?.createClient){
+    setCloudStatus('SDK unavailable','error');if(showErrors)setCloudMessage('The Supabase browser library could not be loaded. Local planner functions still work.','bad');return null;
+  }
+  if(!sbClient){
+    try{
+      sbClient=window.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+      sbClient.auth.onAuthStateChange((_event,session)=>{sbUser=session?.user||null;updateCloudAuthUi();});
+      sbClient.auth.getSession().then(({data,error})=>{if(error){if(showErrors)setCloudMessage(error.message,'bad');return;}sbUser=data?.session?.user||null;updateCloudAuthUi();if(sbUser)syncCloudOnConnect();});
+    }catch(err){setCloudStatus('Configuration error','error');if(showErrors)setCloudMessage(err.message||String(err),'bad');return null;}
+  }
+  return sbClient;
+}
+function updateCloudAuthUi(){
+  const signIn=document.getElementById('cloudSignInBtn'),signUp=document.getElementById('cloudSignUpBtn'),signOut=document.getElementById('cloudSignOutBtn');
+  if(sbUser){
+    setCloudStatus(`Signed in: ${sbUser.email||'user'}`,'connected');
+    if(signIn)signIn.style.display='none';if(signUp)signUp.style.display='none';if(signOut)signOut.style.display='inline-flex';
+  }else{
+    const c=cloudConfigValues();setCloudStatus(c.url&&c.key?'Configured · sign in':'Not configured');
+    if(signIn)signIn.style.display='inline-flex';if(signUp)signUp.style.display='inline-flex';if(signOut)signOut.style.display='none';
+  }
+}
+async function cloudSignIn(){
+  saveCloudConfig();const client=initSupabaseClient();if(!client)return;
+  const email=document.getElementById('supabaseEmail')?.value.trim(),password=document.getElementById('supabasePassword')?.value||'';
+  if(!email||!password){setCloudMessage('Enter your coordinator email and password first.','bad');return;}
+  setCloudMessage('Signing in…');
+  const {data,error}=await client.auth.signInWithPassword({email,password});
+  if(error){setCloudStatus('Sign-in failed','error');setCloudMessage(error.message,'bad');return;}
+  sbUser=data.user;document.getElementById('supabasePassword').value='';updateCloudAuthUi();setCloudMessage('Signed in. Checking which planner copy is newest…','good');await syncCloudOnConnect();
+}
+async function cloudSignUp(){
+  saveCloudConfig();const client=initSupabaseClient();if(!client)return;
+  const email=document.getElementById('supabaseEmail')?.value.trim(),password=document.getElementById('supabasePassword')?.value||'';
+  if(!email||!password){setCloudMessage('Enter an email and password to create the Supabase Auth account.','bad');return;}
+  if(password.length<6){setCloudMessage('Use a password of at least 6 characters.','bad');return;}
+  setCloudMessage('Creating account…');
+  const {data,error}=await client.auth.signUp({email,password});
+  if(error){setCloudStatus('Sign-up failed','error');setCloudMessage(error.message,'bad');return;}
+  document.getElementById('supabasePassword').value='';
+  if(data.session){sbUser=data.user;updateCloudAuthUi();setCloudMessage('Account created and signed in. Initialising cloud planner…','good');await syncCloudOnConnect();}
+  else setCloudMessage('Account created. Check your email for a confirmation link if email confirmation is enabled, then return here and sign in.','good');
+}
+async function cloudSignOut(){
+  const client=initSupabaseClient();if(!client)return;await client.auth.signOut();sbUser=null;updateCloudAuthUi();setCloudMessage('Signed out. Your current planner remains available locally.');
+}
+function plannerStatePayload(){
+  let rawSettings={};try{rawSettings=JSON.parse(localStorage.getItem('fyp1settings')||'{}')}catch(e){}
+  return {
+    version:2,
+    localUpdatedAt:localStorage.getItem('fyp1localupdatedat')||new Date(0).toISOString(),
+    taskEdits:taskEdits(),
+    general:generalEdits(),
+    settings:rawSettings,
+    done:completed()
+  };
+}
+function applyPlannerStatePayload(state){
+  if(!state||typeof state!=='object')return;
+  localStorage.setItem('fyp1taskedits',JSON.stringify(state.taskEdits||{}));
+  localStorage.setItem('fyp1general',JSON.stringify(state.general||{}));
+  localStorage.setItem('fyp1settings',JSON.stringify(state.settings||{}));
+  localStorage.setItem('fyp1done',JSON.stringify(state.done||{}));
+  if(state.localUpdatedAt)localStorage.setItem('fyp1localupdatedat',state.localUpdatedAt);
+  applySavedTaskEdits();applyGeneralEdits();loadGeneralEditor();applySettingsToInputs();applyDone();renderCalendar();
+  if(editorTaskId)loadTaskEditor(editorTaskId);
+}
+function markLocalChange(){
+  localStorage.setItem('fyp1localupdatedat',new Date().toISOString());
+  const c=cloudConfigValues();
+  if(c.autoSync&&sbUser){clearTimeout(cloudSyncTimer);cloudSyncTimer=setTimeout(()=>pushCloudState(true),650);}
+}
+function cloudReadyMessage(){
+  if(!cloudConfigValues().url||!cloudConfigValues().key)return 'Configure your Supabase Project URL and publishable key first.';
+  if(!sbUser)return 'Sign in to Supabase first.';
+  return '';
+}
+async function fetchCloudRow(){
+  const client=initSupabaseClient();const issue=cloudReadyMessage();if(!client||issue)throw new Error(issue||'Supabase unavailable');
+  const c=cloudConfigValues();
+  const {data,error}=await client.from('fyp1_planner_state').select('state,updated_at').eq('user_id',sbUser.id).eq('planner_key',c.plannerKey).maybeSingle();
+  if(error)throw error;return data||null;
+}
+async function pushCloudState(silent=false){
+  if(cloudSyncBusy)return;
+  try{
+    const client=initSupabaseClient();const issue=cloudReadyMessage();if(!client||issue){if(!silent)setCloudMessage(issue||'Supabase unavailable.','bad');return;}
+    cloudSyncBusy=true;if(!silent)setCloudMessage('Uploading planner to Supabase…');
+    const c=cloudConfigValues(), state=plannerStatePayload();
+    const {error}=await client.from('fyp1_planner_state').upsert({user_id:sbUser.id,planner_key:c.plannerKey,state,updated_at:new Date().toISOString()},{onConflict:'user_id,planner_key'});
+    if(error)throw error;
+    const now=new Date().toISOString();localStorage.setItem('fyp1lastcloudsync',now);applyCloudConfigToInputs();setCloudStatus(`Signed in: ${sbUser.email||'user'}`,'connected');setCloudMessage(`Cloud sync complete for “${c.plannerKey}”.`,'good');if(!silent)showToast('Planner pushed to Supabase');
+  }catch(err){setCloudStatus('Cloud sync error','error');setCloudMessage(cloudErrorHelp(err),'bad');if(!silent)showToast('Cloud push failed');}
+  finally{cloudSyncBusy=false;}
+}
+async function pullCloudState(){
+  if(cloudSyncBusy)return;
+  try{
+    cloudSyncBusy=true;setCloudMessage('Downloading planner from Supabase…');
+    const row=await fetchCloudRow();
+    if(!row){setCloudMessage('No cloud planner exists yet for this planner key. Use “Push to cloud” to create it.');return;}
+    applyPlannerStatePayload(row.state||{});
+    const now=new Date().toISOString();localStorage.setItem('fyp1lastcloudsync',now);applyCloudConfigToInputs();setCloudMessage(`Cloud planner loaded. Cloud row updated ${new Date(row.updated_at).toLocaleString('en-MY')}.`,'good');showToast('Planner pulled from Supabase');
+  }catch(err){setCloudStatus('Cloud sync error','error');setCloudMessage(cloudErrorHelp(err),'bad');showToast('Cloud pull failed');}
+  finally{cloudSyncBusy=false;}
+}
+async function syncCloudOnConnect(){
+  if(!sbUser||cloudSyncBusy)return;
+  try{
+    cloudSyncBusy=true;
+    const row=await fetchCloudRow();
+    const localTs=Date.parse(localStorage.getItem('fyp1localupdatedat')||'1970-01-01T00:00:00Z')||0;
+    if(!row){cloudSyncBusy=false;await pushCloudState(true);return;}
+    const cloudTs=Date.parse(row.updated_at||'1970-01-01T00:00:00Z')||0;
+    const stateTs=Date.parse(row.state?.localUpdatedAt||'1970-01-01T00:00:00Z')||0;
+    const effectiveCloudTs=Math.max(cloudTs,stateTs);
+    if(effectiveCloudTs>localTs){applyPlannerStatePayload(row.state||{});setCloudMessage('Cloud copy was newer, so it was loaded onto this device.','good');}
+    else if(localTs>effectiveCloudTs){cloudSyncBusy=false;await pushCloudState(true);return;}
+    else setCloudMessage('Local and cloud planner are already in sync.','good');
+    const now=new Date().toISOString();localStorage.setItem('fyp1lastcloudsync',now);applyCloudConfigToInputs();
+  }catch(err){setCloudStatus('Cloud sync error','error');setCloudMessage(cloudErrorHelp(err),'bad');}
+  finally{cloudSyncBusy=false;}
+}
+function cloudErrorHelp(err){
+  const msg=err?.message||String(err||'Unknown Supabase error');
+  if(/relation .*fyp1_planner_state.* does not exist|Could not find the table/i.test(msg))return msg+' Run the one-time SQL setup in the Supabase SQL Editor.';
+  if(/row-level security|permission denied|42501/i.test(msg))return msg+' Check that the RLS policy from the setup SQL was created and that you are signed in.';
+  if(/invalid api key|JWT|apikey/i.test(msg))return msg+' Check the Project URL and publishable/anon key. Never use a service_role key in this page.';
+  return msg;
+}
+function copySupabaseSql(){const sql=document.getElementById('supabaseSetupSql')?.textContent||'';copyText(sql);}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+applySavedTaskEdits();applyGeneralEdits();loadGeneralEditor();
+applySettingsToInputs();applyDone();updateCountdown();
+applyCloudConfigToInputs();initSupabaseClient(false);
+</script>
+</body>
+</html>
